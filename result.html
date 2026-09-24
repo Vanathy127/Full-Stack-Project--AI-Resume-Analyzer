@@ -2,758 +2,620 @@
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ResumeAI | Results</title>
 
-<title>ResumeAI | Results</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<!-- Bootstrap 5 CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --brand: #5b4bff;
+      --brand-dark: #4a3bea;
+      --bg-soft: #f4f5fb;
+      --text-muted: #6b7280;
+      --border-soft: #e7e8f3;
+      --green: #16a34a;
+      --amber: #f59e0b;
+      --blue: #2563eb;
+      --purple: #7c3aed;
+      --orange: #f97316;
+    }
 
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-soft);
+      color: #1f2130;
+    }
 
-<!-- Google Font -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
+    /* NAVBAR */
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    .navbar {
+      background: #fff;
+      border-bottom: 1px solid var(--border-soft);
+    }
 
-<style>
+    .navbar-brand {
+      font-weight: 800;
+      color: var(--brand) !important;
+      font-size: 1.25rem;
+    }
 
-:root{
-  --brand:#5b4bff;
-  --brand-dark:#4a3bea;
-  --bg-soft:#f4f5fb;
-  --text-muted:#6b7280;
-  --border-soft:#e7e8f3;
-  --green:#16a34a;
-  --amber:#f59e0b;
-  --blue:#2563eb;
-  --purple:#7c3aed;
-  --orange:#f97316;
-}
+    .nav-link {
+      color: #4b4d5c !important;
+      font-weight: 500;
+      margin: 0 .5rem;
+    }
 
-body{
-  font-family:'Inter',sans-serif;
-  background:var(--bg-soft);
-  color:#1f2130;
-}
+    .nav-link:hover {
+      color: var(--brand) !important;
+    }
 
-.navbar{
-  background:#fff;
-  border-bottom:1px solid var(--border-soft);
-}
+    .profile-dropdown-btn {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      background: #fff;
+      border: 1px solid #e5e6ef;
+      border-radius: 11px;
+      padding: 7px 11px;
+      color: #252735;
+      font-size: 14px;
+      font-weight: 600;
+      max-width: 260px;
+      transition: .2s ease;
+    }
 
-.navbar-brand{
-  font-weight:800;
-  color:var(--brand)!important;
-  font-size:1.25rem;
-}
+    .profile-dropdown-btn:hover,
+    .profile-dropdown-btn:focus {
+      background: #fff;
+      border-color: #d8d5ff;
+      color: #252735;
+      box-shadow: 0 5px 18px rgba(40, 41, 70, .08);
+    }
 
-.nav-link{
-  color:#4b4d5c!important;
-  font-weight:500;
-  margin:0 .5rem;
-}
+    .profile-avatar {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #efeeff;
+      color: var(--brand);
+      font-size: 14px;
+    }
 
-.nav-link.active{
-  color:var(--brand)!important;
-  font-weight:600;
-}
+    .profile-email {
+      display: block;
+      max-width: 170px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
-.page-heading h1{
-  font-weight:800;
-  font-size:1.9rem;
-  margin-bottom:.15rem;
-}
+    .profile-dropdown-menu {
+      min-width: 260px;
+      margin-top: 10px !important;
+      padding: 9px;
+      border: 1px solid #e7e8f0;
+      border-radius: 14px;
+      box-shadow: 0 16px 45px rgba(35, 36, 65, .12);
+    }
 
-.file-line{
-  color:var(--text-muted);
-  font-size:.9rem;
-}
+    .profile-dropdown-info {
+      padding: 10px 10px 12px;
+    }
 
-.badge-complete{
-  background:#e8f9ee;
-  color:var(--green);
-  font-weight:600;
-  font-size:.85rem;
-  padding:.4rem .8rem;
-  border-radius:20px;
-}
+    .profile-dropdown-label {
+      display: block;
+      margin-bottom: 3px;
+      color: #9496a4;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
 
-.card-soft{
-  background:#fff;
-  border:1px solid var(--border-soft);
-  border-radius:16px;
-}
+    .profile-dropdown-email {
+      display: block;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #252735;
+      font-size: 13px;
+      font-weight: 600;
+    }
 
-/* Circular score */
+    .profile-dropdown-menu .dropdown-divider {
+      margin: 4px 0 7px;
+      border-color: #ececf2;
+    }
 
-.score-ring{
-  width:150px;
-  height:150px;
-  border-radius:50%;
-  background:conic-gradient(
-    var(--blue) 0% 78%,
-    #edeef7 78% 100%
-  );
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 auto;
-}
+    .signout-btn {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      width: 100%;
+      padding: 9px 10px;
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+      color: #555866;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: left;
+    }
 
-.score-ring-inner{
-  width:112px;
-  height:112px;
-  border-radius:50%;
-  background:#fff;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-}
+    .signout-btn:hover {
+      background: #f6f6fa;
+      color: #dc3545;
+    }
 
-.score-ring-inner .num{
-  font-size:1.9rem;
-  font-weight:800;
-  line-height:1;
-}
+    .navbar-signin-btn {
+      background: var(--brand);
+      color: #fff !important;
+      border-radius: 9px;
+      padding: .55rem 1rem;
+      font-weight: 600;
+    }
 
-.score-ring-inner .of100{
-  font-size:.75rem;
-  color:var(--text-muted);
-}
+    .navbar-signin-btn:hover {
+      background: var(--brand-dark);
+      color: #fff !important;
+    }
 
-.good-score-pill{
-  background:#e8f9ee;
-  color:var(--green);
-  font-weight:600;
-  font-size:.8rem;
-  padding:.3rem .9rem;
-  border-radius:20px;
-  display:inline-block;
-  margin-top:.8rem;
-}
+    /* HEADING */
 
-/* Metric cards */
+    .page-heading h1 {
+      font-weight: 800;
+      font-size: 1.9rem;
+      margin-bottom: .15rem;
+    }
 
-.metric-label{
-  font-size:.85rem;
-  color:#2c2e3d;
-  font-weight:600;
-  margin-bottom:.4rem;
-}
+    .file-line {
+      color: var(--text-muted);
+      font-size: .9rem;
+    }
 
-.metric-value{
-  font-size:1.6rem;
-  font-weight:800;
-  margin-bottom:.6rem;
-}
+    .badge-complete {
+      background: #e8f9ee;
+      color: var(--green);
+      font-weight: 600;
+      font-size: .85rem;
+      padding: .4rem .8rem;
+      border-radius: 20px;
+    }
 
-.metric-value small{
-  font-size:.95rem;
-  font-weight:600;
-  color:var(--text-muted);
-}
+    .heading-area {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: .5s ease;
+    }
 
-.progress{
-  height:7px;
-  border-radius:10px;
-  background:#edeef4;
-}
+    .heading-area.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-.progress-bar.bar-blue{
-  background:var(--blue);
-}
+    /* CARDS */
 
-.progress-bar.bar-purple{
-  background:var(--purple);
-}
+    .card-soft {
+      background: #fff;
+      border: 1px solid var(--border-soft);
+      border-radius: 16px;
+    }
 
-.progress-bar.bar-orange{
-  background:var(--orange);
-}
+    .result-card {
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity .5s ease, transform .5s ease, box-shadow .2s ease;
+    }
 
-.progress-bar.bar-green{
-  background:var(--green);
-}
+    .result-card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-/* Skill tags */
+    .result-card:hover {
+      box-shadow: 0 8px 24px rgba(42, 43, 74, .06);
+    }
 
-.tag{
-  display:inline-block;
-  font-size:.8rem;
-  font-weight:600;
-  padding:.35rem .8rem;
-  border-radius:20px;
-  margin:.2rem .3rem .2rem 0;
-}
+    /* SCORE */
 
-.tag-found{
-  background:#eef0ff;
-  color:var(--brand);
-}
+    .score-ring {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: conic-gradient(
+        var(--blue) 0% 0%,
+        #edeef7 0% 100%
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
 
-.tag-consider{
-  background:#fff2df;
-  color:var(--orange);
-}
+    .score-ring-inner {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
 
-.section-title{
-  font-weight:700;
-  font-size:1rem;
-  margin-bottom:.15rem;
-}
+    .score-ring-inner .num {
+      font-size: 1.9rem;
+      font-weight: 800;
+      line-height: 1;
+    }
 
-.section-sub{
-  font-size:.85rem;
-  color:var(--text-muted);
-  margin-bottom:.9rem;
-}
+    .score-ring-inner .of100 {
+      font-size: .75rem;
+      color: var(--text-muted);
+    }
 
-.icon-badge{
-  width:34px;
-  height:34px;
-  border-radius:9px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:1rem;
-  margin-right:.6rem;
-}
+    .good-score-pill {
+      background: #e8f9ee;
+      color: var(--green);
+      font-weight: 600;
+      font-size: .8rem;
+      padding: .3rem .9rem;
+      border-radius: 20px;
+      display: inline-block;
+      margin-top: .8rem;
+    }
 
-.icon-badge.blue{
-  background:#e7ecff;
-  color:var(--blue);
-}
+    /* METRICS */
 
-.icon-badge.orange{
-  background:#ffe9d6;
-  color:var(--orange);
-}
+    .metric-label {
+      font-size: .85rem;
+      color: #2c2e3d;
+      font-weight: 600;
+      margin-bottom: .4rem;
+    }
 
-/* Strengths / Areas */
+    .metric-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: .6rem;
+    }
 
-.box-strength{
-  background:#f2fbf5;
-  border:1px solid #d4f2de;
-  border-radius:14px;
-  padding:1.2rem 1.4rem;
-}
+    .metric-value small {
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
 
-.box-improve{
-  background:#fffaf0;
-  border:1px solid #fbe6bd;
-  border-radius:14px;
-  padding:1.2rem 1.4rem;
-}
+    .progress {
+      height: 7px;
+      border-radius: 10px;
+      background: #edeef4;
+      overflow: hidden;
+    }
 
-.box-title{
-  font-weight:700;
-  font-size:.95rem;
-  margin-bottom:.7rem;
-}
+    .progress-bar {
+      width: 0;
+      transition: width 1s ease;
+    }
 
-.list-clean{
-  list-style:none;
-  padding-left:0;
-  margin-bottom:0;
-}
+    .progress-bar.bar-blue {
+      background: var(--blue);
+    }
 
-.list-clean li{
-  font-size:.88rem;
-  margin-bottom:.55rem;
-  display:flex;
-  align-items:flex-start;
-  gap:.5rem;
-}
+    .progress-bar.bar-purple {
+      background: var(--purple);
+    }
 
-.list-clean li:last-child{
-  margin-bottom:0;
-}
+    .progress-bar.bar-orange {
+      background: var(--orange);
+    }
 
-.list-clean.strength li i{
-  color:var(--green);
-  margin-top:2px;
-}
+    .progress-bar.bar-green {
+      background: var(--green);
+    }
 
-.list-clean.improve li i{
-  color:var(--amber);
-  margin-top:2px;
-}
+    /* SKILLS */
 
-/* Button */
+    .tag {
+      display: inline-block;
+      font-size: .8rem;
+      font-weight: 600;
+      padding: .35rem .8rem;
+      border-radius: 20px;
+      margin: .2rem .3rem .2rem 0;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: .3s ease;
+    }
 
-.btn-brand{
-  background:var(--brand);
-  border:none;
-  color:#fff;
-  font-weight:600;
-  padding:.7rem 1.6rem;
-  border-radius:10px;
-}
+    .tag.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-.btn-brand:hover{
-  background:var(--brand-dark);
-  color:#fff;
-}
+    .tag-found {
+      background: #eef0ff;
+      color: var(--brand);
+    }
 
-</style>
+    .tag-consider {
+      background: #fff2df;
+      color: var(--orange);
+    }
 
+    .section-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: .15rem;
+    }
+
+    .section-sub {
+      font-size: .85rem;
+      color: var(--text-muted);
+      margin-bottom: .9rem;
+    }
+
+    .icon-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      margin-right: .6rem;
+    }
+
+    .icon-badge.blue {
+      background: #e7ecff;
+      color: var(--blue);
+    }
+
+    .icon-badge.orange {
+      background: #ffe9d6;
+      color: var(--orange);
+    }
+
+    /* STRENGTHS */
+
+    .box-strength {
+      background: #f2fbf5;
+      border: 1px solid #d4f2de;
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+    }
+
+    .box-improve {
+      background: #fffaf0;
+      border: 1px solid #fbe6bd;
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+    }
+
+    .reveal-box {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: .55s ease;
+    }
+
+    .reveal-box.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .box-title {
+      font-weight: 700;
+      font-size: .95rem;
+      margin-bottom: .7rem;
+    }
+
+    .list-clean {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+    }
+
+    .list-clean li {
+      font-size: .88rem;
+      margin-bottom: .55rem;
+      display: flex;
+      align-items: flex-start;
+      gap: .5rem;
+    }
+
+    .list-clean li:last-child {
+      margin-bottom: 0;
+    }
+
+    .list-clean.strength li i {
+      color: var(--green);
+      margin-top: 2px;
+    }
+
+    .list-clean.improve li i {
+      color: var(--amber);
+      margin-top: 2px;
+    }
+
+    /* BUTTONS */
+
+    .btn-brand {
+      background: var(--brand);
+      border: none;
+      color: #fff;
+      font-weight: 600;
+      padding: .7rem 1.6rem;
+      border-radius: 10px;
+      transition: .2s ease;
+    }
+
+    .btn-brand:hover {
+      background: var(--brand-dark);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline-soft {
+      background: #fff;
+      border: 1px solid var(--border-soft);
+      color: #2c2e3d;
+      font-weight: 600;
+      padding: .7rem 1.6rem;
+      border-radius: 10px;
+      transition: .2s ease;
+    }
+
+    .btn-outline-soft:hover {
+      background: #f8f8fc;
+      color: var(--brand);
+      border-color: #d8d5ff;
+    }
+
+    .bottom-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 991px) {
+      .profile-dropdown-btn {
+        margin-top: 8px;
+        max-width: 100%;
+      }
+
+      .profile-dropdown-menu {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 575px) {
+      .bottom-actions {
+        flex-direction: column;
+      }
+
+      .bottom-actions .btn {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-
-<!-- Navbar -->
-
-<nav class="navbar navbar-expand-lg">
-
-  <div class="container">
-
-    <a class="navbar-brand" href="index.html">
-      <i class="bi bi-file-earmark-text-fill"></i>
-      ResumeAI
-    </a>
-
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navMenu">
-
-      <span class="navbar-toggler-icon"></span>
-
-    </button>
-
-
-    <div
-      class="collapse navbar-collapse justify-content-end"
-      id="navMenu">
-
-      <ul class="navbar-nav">
-
-        <li class="nav-item">
-          <a class="nav-link" href="index.html">
-            Home
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="preview.html">
-            Analyze
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link active" href="result.html">
-            Results
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="suggestions.html">
-            Tips
-          </a>
-        </li>
-
-      </ul>
-
-    </div>
-
-  </div>
-
-</nav>
-
-
-
-<!-- Page content -->
-
-<div class="container py-4 py-md-5">
-
-
-  <!-- Heading -->
-
-  <div class="d-flex flex-wrap justify-content-between align-items-start mb-4">
-
-    <div class="page-heading">
-
-      <h1>Your Resume Analysis</h1>
-
-      <div class="file-line">
-
-        <i class="bi bi-file-earmark-pdf me-1"></i>
-
-        Aarshat_Resume.pdf
-
-      </div>
-
-    </div>
-
-
-    <span class="badge-complete mt-2 mt-md-0">
-
-      <i class="bi bi-check-circle-fill me-1"></i>
-
-      Analysis Complete
-
-    </span>
-
-  </div>
-
-
-
-  <!-- Score row -->
-
-  <div class="row g-4 mb-4">
-
-
-    <!-- Overall Score -->
-
-    <div class="col-lg-3 col-md-6">
-
-      <div class="card-soft h-100 p-4 text-center d-flex flex-column justify-content-center">
-
-        <div class="score-ring">
-
-          <div class="score-ring-inner">
-
-            <span class="num">
-              78
-            </span>
-
-            <span class="of100">
-              /100
-            </span>
-
-          </div>
-
-        </div>
-
-        <div>
-
-          <span class="good-score-pill">
-            Good Score
-          </span>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-
-    <!-- Content -->
-
-    <div class="col-lg-3 col-md-6">
-
-      <div class="card-soft h-100 p-4">
-
-        <div class="metric-label">
-          Content
-        </div>
-
-        <div class="metric-value">
-          82
-          <small>/100</small>
-        </div>
-
-        <div class="progress">
-
-          <div
-            class="progress-bar bar-blue"
-            style="width:82%">
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-
-    <!-- Skills -->
-
-    <div class="col-lg-3 col-md-6">
-
-      <div class="card-soft h-100 p-4">
-
-        <div class="metric-label">
-          Skills
-        </div>
-
-        <div class="metric-value">
-          76
-          <small>/100</small>
-        </div>
-
-        <div class="progress">
-
-          <div
-            class="progress-bar bar-purple"
-            style="width:76%">
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-
-    <!-- Job Match -->
-
-    <div class="col-lg-3 col-md-6">
-
-      <div class="card-soft h-100 p-4">
-
-        <div class="metric-label">
-          Job Match
-        </div>
-
-        <div class="metric-value">
-          74
-          <small>/100</small>
-        </div>
-
-        <div class="progress">
-
-          <div
-            class="progress-bar bar-orange"
-            style="width:74%">
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- Formatting -->
-
-  <div class="row g-4 mb-4">
-
-    <div class="col-12 col-md-6 col-lg-3">
-
-      <div class="card-soft h-100 p-4">
-
-        <div class="metric-label">
-          Formatting
-        </div>
-
-        <div class="metric-value">
-          85
-          <small>/100</small>
-        </div>
-
-        <div class="progress">
-
-          <div
-            class="progress-bar bar-green"
-            style="width:85%">
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- Skills Found / Skills to Consider -->
-
-  <div class="row g-4 mb-4">
-
-
-    <!-- Skills Found -->
-
-    <div class="col-lg-6">
-
-      <div class="card-soft h-100 p-4">
-
-        <div class="d-flex align-items-center mb-1">
-
-          <div class="icon-badge blue">
-
-            <i class="bi bi-check2-square"></i>
-
-          </div>
-
-          <div>
-
-            <div class="section-title">
-              Skills Found
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="section-sub">
-
-          We found 6 relevant skills in your resume.
-
-        </div>
-
-
-        <div>
-
-          <span class="tag tag-found">
-            AutoCAD
-          </span>
-
-          <span class="tag tag-found">
-            Java
-          </span>
-
-          <span class="tag tag-found">
-            Python
-          </span>
-
-          <span class="tag tag-found">
-            HTML
-          </span>
-
-          <span class="tag tag-found">
-            CSS
-          </span>
-
-          <span class="tag tag-found">
-            SQL
-          </span>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-
-    <!-- Skills to Consider -->
-
-    <div class="col-lg-6">
-
-      <div class="card-soft h-100 p-4">
-
-        <div class="d-flex align-items-center mb-1">
-
-          <div class="icon-badge orange">
-
-            <i class="bi bi-lightbulb"></i>
-
-          </div>
-
-          <div>
-
-            <div class="section-title">
-              Skills to Consider
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="section-sub">
-
-          These skills are mentioned in the job description
-          but not clearly found in your resume.
-
-        </div>
-
-
-        <div>
-
-          <span class="tag tag-consider">
-            Revit
-          </span>
-
-          <span class="tag tag-consider">
-            Project Management
-          </span>
-
-          <span class="tag tag-consider">
-            BIM
-          </span>
-
-          <span class="tag tag-consider">
-            Excel
-          </span>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- Strengths / Areas to Improve -->
-
-  <div class="row g-4 mb-4">
-
-
-    <!-- Strengths -->
-
-    <div class="col-lg-6">
-
-      <div class="box-strength h-100">
-
-        <div class="box-title">
-
-          <i class="bi bi-hand-thumbs-up-fill text-success me-1"></i>
-
-          Strengths
-
-        </div>
-
-
-        <ul class="list-clean strength">
-
-          <li>
-
-            <i class="bi bi-check-circle-fill"></i>
-
-            Clear education section
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+
+      <a class="navbar-brand" href="index.html">
+        <i class="bi bi-file-earmark-text-fill"></i>
+        ResumeAI
+      </a>
+
+      <button class="navbar-toggler border-0 shadow-none"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navMenu"
+              aria-controls="navMenu"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+
+        <ul class="navbar-nav align-items-lg-center gap-lg-3">
+
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">
+              Home
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="analyze.html">
+              Analyze
+            </a>
+          </li>
+
+          <!-- Logged out -->
+          <li class="nav-item ms-lg-2" id="signedOutNav">
+
+            <a class="btn navbar-signin-btn" href="login.html">
+              Sign In
+              <i class="bi bi-arrow-right ms-1"></i>
+            </a>
 
           </li>
 
-          <li>
+          <!-- Logged in -->
+          <li class="nav-item dropdown ms-lg-2 d-none" id="signedInNav">
 
-            <i class="bi bi-check-circle-fill"></i>
+            <button class="btn profile-dropdown-btn dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
 
-            Good technical skills
+              <span class="profile-avatar">
+                <i class="bi bi-person-fill"></i>
+              </span>
 
-          </li>
+              <span class="profile-email" id="navbarUserEmail">
+                user@example.com
+              </span>
 
-          <li>
+            </button>
 
-            <i class="bi bi-check-circle-fill"></i>
+            <ul class="dropdown-menu dropdown-menu-end profile-dropdown-menu">
 
-            Clean and structured format
+              <li>
+                <div class="profile-dropdown-info">
 
-          </li>
+                  <span class="profile-dropdown-label">
+                    Signed in as
+                  </span>
 
-          <li>
+                  <span class="profile-dropdown-email" id="dropdownUserEmail">
+                    user@example.com
+                  </span>
 
-            <i class="bi bi-check-circle-fill"></i>
+                </div>
+              </li>
 
-            Relevant project work
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+
+              <li>
+
+                <button type="button"
+                        class="signout-btn"
+                        id="signOutBtn">
+
+                  <i class="bi bi-box-arrow-right"></i>
+                  Sign Out
+
+                </button>
+
+              </li>
+
+            </ul>
 
           </li>
 
@@ -762,94 +624,602 @@ body{
       </div>
 
     </div>
+  </nav>
 
 
+  <!-- PAGE -->
+  <main class="container py-4 py-md-5">
 
-    <!-- Areas to Improve -->
+    <!-- HEADING -->
+    <div class="d-flex flex-wrap justify-content-between align-items-start mb-4 heading-area">
 
-    <div class="col-lg-6">
+      <div class="page-heading">
 
-      <div class="box-improve h-100">
+        <h1>Your Resume Analysis</h1>
 
-        <div class="box-title">
+        <div class="file-line">
+          <i class="bi bi-file-earmark-pdf me-1"></i>
+          <span id="resultFileName">Uploaded Resume</span>
+        </div>
 
-          <i class="bi bi-exclamation-triangle-fill text-warning me-1"></i>
+      </div>
 
-          Areas to Improve
+      <span class="badge-complete mt-2 mt-md-0">
+        <i class="bi bi-check-circle-fill me-1"></i>
+        Analysis Complete
+      </span>
+
+    </div>
+
+
+    <!-- SCORE ROW -->
+    <div class="row g-4 mb-4">
+
+      <!-- OVERALL -->
+      <div class="col-lg-3 col-md-6">
+
+        <div class="card-soft result-card h-100 p-4 text-center d-flex flex-column justify-content-center">
+
+          <div class="score-ring" id="scoreRing">
+
+            <div class="score-ring-inner">
+
+              <span class="num"
+                    id="overallScore"
+                    data-score="78">
+                0
+              </span>
+
+              <span class="of100">
+                /100
+              </span>
+
+            </div>
+
+          </div>
+
+          <div>
+            <span class="good-score-pill">
+              Good Score
+            </span>
+          </div>
 
         </div>
 
+      </div>
 
-        <ul class="list-clean improve">
 
-          <li>
+      <!-- CONTENT -->
+      <div class="col-lg-3 col-md-6">
 
-            <i class="bi bi-exclamation-triangle-fill"></i>
+        <div class="card-soft result-card h-100 p-4">
 
-            Add more project details
+          <div class="metric-label">
+            Content
+          </div>
 
-          </li>
+          <div class="metric-value">
+            <span class="counter" data-score="82">0</span>
+            <small>/100</small>
+          </div>
 
-          <li>
+          <div class="progress">
+            <div class="progress-bar bar-blue"
+                 data-width="82">
+            </div>
+          </div>
 
-            <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
 
-            Include measurable achievements
+      </div>
 
-          </li>
 
-          <li>
+      <!-- SKILLS -->
+      <div class="col-lg-3 col-md-6">
 
-            <i class="bi bi-exclamation-triangle-fill"></i>
+        <div class="card-soft result-card h-100 p-4">
 
-            Improve professional summary
+          <div class="metric-label">
+            Skills
+          </div>
 
-          </li>
+          <div class="metric-value">
+            <span class="counter" data-score="76">0</span>
+            <small>/100</small>
+          </div>
 
-          <li>
+          <div class="progress">
+            <div class="progress-bar bar-purple"
+                 data-width="76">
+            </div>
+          </div>
 
-            <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
 
-            Add relevant keywords from job description
+      </div>
 
-          </li>
 
-        </ul>
+      <!-- JOB MATCH -->
+      <div class="col-lg-3 col-md-6">
+
+        <div class="card-soft result-card h-100 p-4">
+
+          <div class="metric-label">
+            Job Match
+          </div>
+
+          <div class="metric-value">
+            <span class="counter" data-score="74">0</span>
+            <small>/100</small>
+          </div>
+
+          <div class="progress">
+            <div class="progress-bar bar-orange"
+                 data-width="74">
+            </div>
+          </div>
+
+        </div>
 
       </div>
 
     </div>
 
-  </div>
+
+    <!-- FORMATTING -->
+    <div class="row g-4 mb-4">
+
+      <div class="col-12 col-md-6 col-lg-3">
+
+        <div class="card-soft result-card h-100 p-4">
+
+          <div class="metric-label">
+            Formatting
+          </div>
+
+          <div class="metric-value">
+            <span class="counter" data-score="85">0</span>
+            <small>/100</small>
+          </div>
+
+          <div class="progress">
+            <div class="progress-bar bar-green"
+                 data-width="85">
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
 
 
+    <!-- SKILLS -->
+    <div class="row g-4 mb-4">
 
-  <!-- Analyze Another Resume -->
+      <!-- FOUND -->
+      <div class="col-lg-6">
 
-  <div class="text-center mt-2">
+        <div class="card-soft result-card h-100 p-4">
 
-    <a
-      href="index.html"
-      class="btn btn-brand">
+          <div class="d-flex align-items-center mb-1">
 
-      Analyze Another Resume
+            <div class="icon-badge blue">
+              <i class="bi bi-check2-square"></i>
+            </div>
 
-      <i class="bi bi-arrow-right ms-1"></i>
+            <div>
+              <div class="section-title">
+                Skills Found
+              </div>
+            </div>
 
-    </a>
+          </div>
 
-  </div>
+          <div class="section-sub">
+            We found 6 relevant skills in your resume.
+          </div>
+
+          <div class="skills-tags">
+
+            <span class="tag tag-found">AutoCAD</span>
+            <span class="tag tag-found">Java</span>
+            <span class="tag tag-found">Python</span>
+            <span class="tag tag-found">HTML</span>
+            <span class="tag tag-found">CSS</span>
+            <span class="tag tag-found">SQL</span>
+
+          </div>
+
+        </div>
+
+      </div>
 
 
-</div>
+      <!-- CONSIDER -->
+      <div class="col-lg-6">
+
+        <div class="card-soft result-card h-100 p-4">
+
+          <div class="d-flex align-items-center mb-1">
+
+            <div class="icon-badge orange">
+              <i class="bi bi-lightbulb"></i>
+            </div>
+
+            <div>
+              <div class="section-title">
+                Skills to Consider
+              </div>
+            </div>
+
+          </div>
+
+          <div class="section-sub">
+            These skills are mentioned in the job description
+            but not clearly found in your resume.
+          </div>
+
+          <div class="skills-tags">
+
+            <span class="tag tag-consider">Revit</span>
+            <span class="tag tag-consider">Project Management</span>
+            <span class="tag tag-consider">BIM</span>
+            <span class="tag tag-consider">Excel</span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
 
 
+    <!-- STRENGTHS / IMPROVEMENTS -->
+    <div class="row g-4 mb-4">
 
-<!-- Bootstrap JS -->
+      <div class="col-lg-6">
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <div class="box-strength h-100 reveal-box">
 
+          <div class="box-title">
+
+            <i class="bi bi-hand-thumbs-up-fill text-success me-1"></i>
+            Strengths
+
+          </div>
+
+          <ul class="list-clean strength">
+
+            <li>
+              <i class="bi bi-check-circle-fill"></i>
+              Clear education section
+            </li>
+
+            <li>
+              <i class="bi bi-check-circle-fill"></i>
+              Good technical skills
+            </li>
+
+            <li>
+              <i class="bi bi-check-circle-fill"></i>
+              Clean and structured format
+            </li>
+
+            <li>
+              <i class="bi bi-check-circle-fill"></i>
+              Relevant project work
+            </li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+
+      <div class="col-lg-6">
+
+        <div class="box-improve h-100 reveal-box">
+
+          <div class="box-title">
+
+            <i class="bi bi-exclamation-triangle-fill text-warning me-1"></i>
+            Areas to Improve
+
+          </div>
+
+          <ul class="list-clean improve">
+
+            <li>
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              Add more project details
+            </li>
+
+            <li>
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              Include measurable achievements
+            </li>
+
+            <li>
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              Improve professional summary
+            </li>
+
+            <li>
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              Add relevant keywords from job description
+            </li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ACTIONS -->
+    <div class="bottom-actions mt-2">
+
+      <a href="analyze.html"
+         class="btn btn-outline-soft">
+
+        <i class="bi bi-arrow-counterclockwise me-1"></i>
+        Analyze Another Resume
+
+      </a>
+
+      <a href="suggestions.html"
+         class="btn btn-brand">
+
+        View Improvement Tips
+        <i class="bi bi-arrow-right ms-1"></i>
+
+      </a>
+
+    </div>
+
+  </main>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    $(function () {
+
+      // =============================================
+      // PROFILE
+      // =============================================
+
+      const loggedInUser = sessionStorage.getItem("user");
+
+      if (loggedInUser) {
+
+        $("#signedOutNav").addClass("d-none");
+        $("#signedInNav").removeClass("d-none");
+
+        $("#navbarUserEmail").text(loggedInUser);
+        $("#dropdownUserEmail").text(loggedInUser);
+
+      } else {
+
+        $("#signedOutNav").removeClass("d-none");
+        $("#signedInNav").addClass("d-none");
+
+      }
+
+
+      // =============================================
+      // FILE NAME
+      // =============================================
+
+      const resumeFile = sessionStorage.getItem("resumeFile");
+
+      if (resumeFile) {
+        $("#resultFileName").text(resumeFile);
+      }
+
+
+      // =============================================
+      // SIGN OUT
+      // =============================================
+
+      $("#signOutBtn").on("click", function () {
+
+        sessionStorage.removeItem("user");
+        sessionStorage.removeItem("afterLogin");
+        sessionStorage.removeItem("resumeFile");
+        sessionStorage.removeItem("jobDescription");
+        sessionStorage.removeItem("score");
+        sessionStorage.removeItem("foundSkills");
+        sessionStorage.removeItem("missingSkills");
+
+        window.location.href = "index.html";
+
+      });
+
+
+      // =============================================
+      // PAGE ENTRANCE
+      // =============================================
+
+      setTimeout(function () {
+        $(".heading-area").addClass("show");
+      }, 80);
+
+
+      $(".result-card").each(function (index) {
+
+        const card = $(this);
+
+        setTimeout(function () {
+          card.addClass("show");
+        }, 130 + (index * 80));
+
+      });
+
+
+      // =============================================
+      // NUMBER COUNTER
+      // =============================================
+
+      function animateNumber(element, target, duration) {
+
+        const startTime = performance.now();
+
+        function update(currentTime) {
+
+          const elapsed = currentTime - startTime;
+
+          const progress =
+            Math.min(elapsed / duration, 1);
+
+          const value =
+            Math.round(target * progress);
+
+          element.text(value);
+
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          }
+
+        }
+
+        requestAnimationFrame(update);
+
+      }
+
+
+      // Overall score
+
+      const overallTarget =
+        Number($("#overallScore").data("score"));
+
+      animateNumber(
+        $("#overallScore"),
+        overallTarget,
+        900
+      );
+
+
+      // Metric scores
+
+      $(".counter").each(function () {
+
+        const element = $(this);
+        const target = Number(element.data("score"));
+
+        animateNumber(
+          element,
+          target,
+          900
+        );
+
+      });
+
+
+      // =============================================
+      // SCORE RING
+      // =============================================
+
+      let ringValue = 0;
+
+      const ringTimer = setInterval(function () {
+
+        ringValue++;
+
+        $("#scoreRing").css(
+          "background",
+          "conic-gradient(" +
+            "var(--blue) 0% " +
+            ringValue +
+            "%, #edeef7 " +
+            ringValue +
+            "% 100%)"
+        );
+
+        if (ringValue >= overallTarget) {
+          clearInterval(ringTimer);
+        }
+
+      }, 11);
+
+
+      // =============================================
+      // PROGRESS BARS
+      // =============================================
+
+      setTimeout(function () {
+
+        $(".progress-bar").each(function () {
+
+          const width = $(this).data("width");
+
+          $(this).css(
+            "width",
+            width + "%"
+          );
+
+        });
+
+      }, 250);
+
+
+      // =============================================
+      // SKILL TAGS
+      // =============================================
+
+      $(".tag").each(function (index) {
+
+        const tag = $(this);
+
+        setTimeout(function () {
+          tag.addClass("show");
+        }, 550 + (index * 70));
+
+      });
+
+
+      // =============================================
+      // STRENGTH / IMPROVEMENT REVEAL
+      // =============================================
+
+      function revealBoxes() {
+
+        $(".reveal-box").each(function () {
+
+          const element = $(this);
+
+          const elementTop =
+            element.offset().top;
+
+          const screenBottom =
+            $(window).scrollTop() +
+            $(window).height() -
+            50;
+
+          if (screenBottom > elementTop) {
+            element.addClass("show");
+          }
+
+        });
+
+      }
+
+      revealBoxes();
+
+      $(window).on(
+        "scroll",
+        revealBoxes
+      );
+
+    });
+  </script>
 
 </body>
-
 </html>

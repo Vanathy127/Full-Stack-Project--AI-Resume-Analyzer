@@ -1,140 +1,378 @@
 $(function () {
 
   const SKILLS = [
-    "react", "javascript", "typescript", "html", "css", "node.js",
-    "rest api", "mongodb", "sql", "git", "docker", "python",
-    "figma", "bootstrap", "jquery", "tailwind", "aws", "testing"
+    "react",
+    "javascript",
+    "typescript",
+    "html",
+    "css",
+    "node.js",
+    "rest api",
+    "mongodb",
+    "sql",
+    "git",
+    "docker",
+    "python",
+    "figma",
+    "bootstrap",
+    "jquery",
+    "tailwind",
+    "aws",
+    "testing"
   ];
 
   let file = null;
 
+
+  // =====================================================
+  // ERROR MESSAGE
+  // =====================================================
+
   function showError(msg) {
-    $("#err").text(msg).toggleClass("d-none", !msg);
+
+    $("#err")
+      .text(msg)
+      .toggleClass("d-none", !msg);
+
   }
 
-  // ---- File upload: click, keyboard, drag and drop ----
 
-  $("#drop").on("click", () => $("#file").trigger("click"));
+
+  // =====================================================
+  // FILE UPLOAD
+  // =====================================================
+
+  $("#drop").on("click", function () {
+
+    $("#file").trigger("click");
+
+  });
+
 
   $("#drop").on("keydown", function (e) {
+
     if (e.key === "Enter" || e.key === " ") {
+
       e.preventDefault();
+
       $("#file").trigger("click");
+
     }
+
   });
+
 
   $("#file").on("change", function () {
+
     setFile(this.files[0]);
+
   });
 
-  $("#drop").on("dragover dragleave drop", function (e) {
+
+
+  // =====================================================
+  // DRAG AND DROP
+  // =====================================================
+
+  $("#drop").on("dragover", function (e) {
+
     e.preventDefault();
 
-    $(this).toggleClass("over", e.type === "dragover");
+    $(this).addClass("over");
 
-    if (e.type === "drop") {
-      setFile(e.originalEvent.dataTransfer.files[0]);
-    }
   });
+
+
+  $("#drop").on("dragleave", function (e) {
+
+    e.preventDefault();
+
+    $(this).removeClass("over");
+
+  });
+
+
+  $("#drop").on("drop", function (e) {
+
+    e.preventDefault();
+
+    $(this).removeClass("over");
+
+    const droppedFile =
+      e.originalEvent.dataTransfer.files[0];
+
+    setFile(droppedFile);
+
+  });
+
+
+
+  // =====================================================
+  // FILE VALIDATION
+  // =====================================================
 
   function setFile(f) {
 
-    if (!f) return;
-
-    if (!/\.(pdf|docx?)$/i.test(f.name)) {
-      return showError("Upload a PDF or DOCX file.");
+    if (!f) {
+      return;
     }
+
+
+    const validFile =
+      /\.(pdf|doc|docx)$/i.test(f.name);
+
+
+    if (!validFile) {
+
+      file = null;
+
+      $("#file").val("");
+
+      $("#fname").text(
+        "Drop your resume here"
+      );
+
+      $("#drop").removeClass(
+        "file-selected"
+      );
+
+      return showError(
+        "Upload a PDF, DOC or DOCX file."
+      );
+
+    }
+
 
     if (f.size > 5 * 1024 * 1024) {
-      return showError("That file is over 5 MB. Upload a smaller one.");
+
+      file = null;
+
+      $("#file").val("");
+
+      $("#fname").text(
+        "Drop your resume here"
+      );
+
+      $("#drop").removeClass(
+        "file-selected"
+      );
+
+      return showError(
+        "That file is over 5 MB. Upload a smaller one."
+      );
+
     }
+
 
     file = f;
 
+
     showError("");
 
-    $("#fname").text(f.name);
+
+    $("#fname").text(
+      f.name
+    );
+
+
+    $("#drop").addClass(
+      "file-selected"
+    );
+
   }
 
 
-  // ---- Analyze button ----
+
+  // =====================================================
+  // ANALYZE BUTTON
+  // =====================================================
 
   $("#go").on("click", function () {
 
-    const jd = $("#jd").val().toLowerCase();
+
+    const jd =
+      $("#jd")
+        .val()
+        .trim()
+        .toLowerCase();
+
+
+
+    // Resume required
 
     if (!file) {
-      return showError("Upload your resume first.");
+
+      return showError(
+        "Upload your resume first."
+      );
+
     }
 
-    if (jd.trim().length < 20) {
+
+
+    // Job description required
+
+    if (jd.length < 20) {
+
       return showError(
         "Paste the job description (at least a few lines)."
       );
+
     }
+
+
 
     showError("");
 
-    const $btn = $(this)
+
+    const $btn =
+      $(this);
+
+
+    const originalButtonHTML =
+      $btn.html();
+
+
+
+    // Loading state
+
+    $btn
       .prop("disabled", true)
-      .text("Analyzing...");
+      .html(
+        '<span class="spinner-border spinner-border-sm me-2"></span>' +
+        'Analyzing...'
+      );
+
 
 
     /*
-      TODO (backend):
-      Send `file` and `jd` to your API.
+      FRONTEND DEMO
 
-      For the frontend demo we compare the
-      sample resume with the job description.
+      The resume is not actually being parsed yet.
+
+      The hidden [data-k] elements inside analyze.html
+      act as the sample resume skills.
+
+      The job description is compared with those skills
+      to create a frontend demonstration score.
     */
 
 
     setTimeout(function () {
 
-      const resumeSkills = $("[data-k]")
-        .map(function () {
-          return $(this).data("k");
-        })
-        .get();
 
-      const wanted = SKILLS.filter(function (k) {
-        return jd.includes(k);
-      });
+      // =================================================
+      // GET DEMO RESUME SKILLS
+      // =================================================
 
-      const found = wanted.filter(function (k) {
-        return resumeSkills.includes(k);
-      });
+      const resumeSkills =
 
-      const missing = wanted.filter(function (k) {
-        return !resumeSkills.includes(k);
-      });
+        $("[data-k]")
 
-      const pct = wanted.length
-        ? Math.round(found.length / wanted.length * 100)
-        : 0;
+          .map(function () {
+
+            return String(
+              $(this).data("k")
+            ).toLowerCase();
+
+          })
+
+          .get();
 
 
-      // Save analysis information for the next pages
+
+      // =================================================
+      // FIND SKILLS FROM JOB DESCRIPTION
+      // =================================================
+
+      const wanted =
+
+        SKILLS.filter(function (skill) {
+
+          return jd.includes(skill);
+
+        });
+
+
+
+      // =================================================
+      // SKILLS FOUND IN RESUME
+      // =================================================
+
+      const found =
+
+        wanted.filter(function (skill) {
+
+          return resumeSkills.includes(
+            skill
+          );
+
+        });
+
+
+
+      // =================================================
+      // MISSING SKILLS
+      // =================================================
+
+      const missing =
+
+        wanted.filter(function (skill) {
+
+          return !resumeSkills.includes(
+            skill
+          );
+
+        });
+
+
+
+      // =================================================
+      // MATCH PERCENTAGE
+      // =================================================
+
+      const percentage =
+
+        wanted.length
+
+          ? Math.round(
+              (
+                found.length /
+                wanted.length
+              ) * 100
+            )
+
+          : 0;
+
+
+
+      // =================================================
+      // SAVE ANALYSIS DATA
+      // =================================================
 
       sessionStorage.setItem(
         "resumeFile",
         file.name
       );
 
+
       sessionStorage.setItem(
         "jobDescription",
         jd
       );
 
+
       sessionStorage.setItem(
         "score",
-        pct
+        percentage
       );
+
 
       sessionStorage.setItem(
         "foundSkills",
         JSON.stringify(found)
       );
+
 
       sessionStorage.setItem(
         "missingSkills",
@@ -142,97 +380,201 @@ $(function () {
       );
 
 
-      // Open resume preview page
 
-      window.location.href = "preview.html";
+      // =================================================
+      // GO DIRECTLY TO PREVIEW
+      // =================================================
+
+      window.location.href =
+        "preview.html";
+
 
     }, 900);
 
   });
 
 
-  // ---- Existing results functions ----
-  // Keeping these so the original code is not removed.
+
+  // =====================================================
+  // OLD RESULT FUNCTIONS
+  // =====================================================
+  //
+  // These are kept so older HTML sections still work
+  // if they are used anywhere in the project.
+  //
+  // =====================================================
+
 
   function badges(list, cls) {
 
+
     if (!list.length) {
-      return '<span class="text-secondary">None</span>';
+
+      return (
+        '<span class="text-secondary">' +
+        'None' +
+        '</span>'
+      );
+
     }
 
+
     return list
-      .map(function (k) {
+
+      .map(function (skill) {
+
         return (
           '<span class="badge rounded-pill text-bg-' +
           cls +
-          '">' +
-          k +
-          "</span>"
+          ' me-1">' +
+          skill +
+          '</span>'
         );
+
       })
+
       .join("");
+
   }
+
 
 
   function render(pct, found, missing) {
 
+
+    // Highlight matched skills
+
     $("[data-k]").each(function () {
+
+
+      const skill =
+        String(
+          $(this).data("k")
+        ).toLowerCase();
+
 
       $(this).toggleClass(
         "hit",
-        found.includes($(this).data("k"))
+        found.includes(skill)
       );
+
 
     });
 
 
-    $("#pct").text(pct + "%");
 
+    // Percentage
+
+    $("#pct").text(
+      pct + "%"
+    );
+
+
+
+    // Progress bar
 
     $("#bar")
-      .css("width", pct + "%")
-      .toggleClass("bg-success", pct >= 70)
+
+      .css(
+        "width",
+        pct + "%"
+      )
+
+      .toggleClass(
+        "bg-success",
+        pct >= 70
+      )
+
       .toggleClass(
         "bg-warning",
         pct >= 40 && pct < 70
       )
-      .toggleClass("bg-danger", pct < 40);
 
-
-    $("#summary").text(
-      found.length +
-      " of " +
-      (found.length + missing.length) +
-      " skills from the job description appear in your resume."
-    );
-
-
-    $("#ok").html(
-      badges(found, "success")
-    );
-
-
-    $("#miss").html(
-      badges(missing, "danger")
-    );
-
-
-    const tips = missing.map(function (k) {
-
-      return (
-        "<li>Add <b>" +
-        k +
-        "</b> to your skills, or show it in a project, if you've used it.</li>"
+      .toggleClass(
+        "bg-danger",
+        pct < 40
       );
 
-    });
 
 
-    tips.push(
-      missing.length
-        ? "<li>Start each project bullet with what you built and the result.</li>"
-        : "<li>Strong match. Add numbers to your project bullets, like users, load time, or team size.</li>"
+    // Summary
+
+    $("#summary").text(
+
+      found.length +
+
+      " of " +
+
+      (found.length + missing.length) +
+
+      " skills from the job description appear in your resume."
+
     );
+
+
+
+    // Found skills
+
+    $("#ok").html(
+
+      badges(
+        found,
+        "success"
+      )
+
+    );
+
+
+
+    // Missing skills
+
+    $("#miss").html(
+
+      badges(
+        missing,
+        "danger"
+      )
+
+    );
+
+
+
+    // Tips
+
+    const tips =
+
+      missing.map(function (skill) {
+
+        return (
+          "<li>Add <b>" +
+          skill +
+          "</b> to your skills, or show it in a project, if you've used it.</li>"
+        );
+
+      });
+
+
+
+    if (missing.length) {
+
+      tips.push(
+
+        "<li>Start each project bullet with what you built and the result.</li>"
+
+      );
+
+    }
+
+    else {
+
+      tips.push(
+
+        "<li>Strong match. Add numbers to your project bullets, like users, load time, or team size.</li>"
+
+      );
+
+    }
+
 
 
     $("#tips").html(
@@ -240,16 +582,28 @@ $(function () {
     );
 
 
-    $("#results").removeClass("d-none");
+
+    $("#results")
+      .removeClass("d-none");
 
 
-    $("html, body").animate(
-      {
-        scrollTop:
-          $("#results").offset().top - 20
-      },
-      400
-    );
+
+    if ($("#results").length) {
+
+      $("html, body").animate(
+
+        {
+
+          scrollTop:
+            $("#results").offset().top - 20
+
+        },
+
+        400
+
+      );
+
+    }
 
   }
 

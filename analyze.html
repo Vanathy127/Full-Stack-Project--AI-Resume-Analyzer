@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ResumeAI | Analyze Resume</title>
+
+  <!-- Bootstrap -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
+    rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+    rel="stylesheet">
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+
+    /* PROFILE */
+
+    .profile-dropdown-btn {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      background: #ffffff;
+      border: 1px solid #e5e6ef;
+      border-radius: 11px;
+      padding: 8px 12px;
+      color: #252735;
+      font-size: 14px;
+      font-weight: 600;
+      max-width: 260px;
+      transition: .2s ease;
+    }
+
+    .profile-dropdown-btn:hover,
+    .profile-dropdown-btn:focus {
+      background: #ffffff;
+      border-color: #d8d5ff;
+      color: #252735;
+      box-shadow: 0 5px 18px rgba(40, 41, 70, .08);
+    }
+
+    .profile-avatar {
+      width: 31px;
+      height: 31px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #efeeff;
+      color: #5146ff;
+      font-size: 14px;
+    }
+
+    .profile-email {
+      display: block;
+      max-width: 170px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .profile-dropdown-menu {
+      min-width: 260px;
+      margin-top: 10px !important;
+      padding: 9px;
+      border: 1px solid #e7e8f0;
+      border-radius: 14px;
+      box-shadow: 0 16px 45px rgba(35, 36, 65, .12);
+    }
+
+    .profile-dropdown-info {
+      padding: 10px 10px 12px;
+    }
+
+    .profile-dropdown-label {
+      display: block;
+      margin-bottom: 3px;
+      color: #9496a4;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .profile-dropdown-email {
+      display: block;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #252735;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .profile-dropdown-menu .dropdown-divider {
+      margin: 4px 0 7px;
+      border-color: #ececf2;
+    }
+
+    .signout-btn {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      width: 100%;
+      padding: 9px 10px;
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+      color: #555866;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: left;
+      transition: .2s ease;
+    }
+
+    .signout-btn:hover {
+      background: #f6f6fa;
+      color: #dc3545;
+    }
+
+    @media (max-width: 991px) {
+
+      .profile-dropdown-btn {
+        margin-top: 8px;
+        max-width: 100%;
+      }
+
+      .profile-email {
+        max-width: 210px;
+      }
+
+      .profile-dropdown-menu {
+        width: 100%;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body class="analyze-page">
+
+
+  <!-- =========================================
+       NAVBAR
+       ========================================= -->
+
+  <nav class="navbar navbar-expand-lg resume-navbar">
+
+    <div class="container">
+
+      <!-- BRAND -->
+
+      <a class="navbar-brand resume-brand" href="index.html">
+
+        <div class="brand-icon">
+          <i class="bi bi-file-earmark-text-fill"></i>
+        </div>
+
+        <span>ResumeAI</span>
+
+      </a>
+
+
+      <!-- MOBILE BUTTON -->
+
+      <button
+        class="navbar-toggler border-0 shadow-none"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#mainNavbar"
+        aria-controls="mainNavbar"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+
+        <i class="bi bi-list fs-2"></i>
+
+      </button>
+
+
+      <div
+        class="collapse navbar-collapse"
+        id="mainNavbar">
+
+        <ul
+          class="navbar-nav ms-auto align-items-lg-center gap-lg-4">
+
+
+          <!-- HOME -->
+
+          <li class="nav-item">
+
+            <a
+              class="nav-link home-nav-link"
+              href="index.html">
+
+              Home
+
+            </a>
+
+          </li>
+
+
+          <!-- SIGN IN
+               This appears only if Analyze is opened
+               directly without a login session. -->
+
+          <li
+            class="nav-item ms-lg-2"
+            id="signedOutNav">
+
+            <a
+              class="btn navbar-signin-btn"
+              href="login.html">
+
+              Sign In
+
+              <i class="bi bi-arrow-right ms-1"></i>
+
+            </a>
+
+          </li>
+
+
+          <!-- PROFILE -->
+
+          <li
+            class="nav-item dropdown ms-lg-2 d-none"
+            id="signedInNav">
+
+            <button
+              class="btn profile-dropdown-btn dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+
+              <span class="profile-avatar">
+
+                <i class="bi bi-person-fill"></i>
+
+              </span>
+
+              <span
+                class="profile-email"
+                id="navbarUserEmail">
+
+                user@example.com
+
+              </span>
+
+            </button>
+
+
+            <ul
+              class="dropdown-menu dropdown-menu-end profile-dropdown-menu">
+
+              <li>
+
+                <div class="profile-dropdown-info">
+
+                  <span class="profile-dropdown-label">
+                    Signed in as
+                  </span>
+
+                  <span
+                    class="profile-dropdown-email"
+                    id="dropdownUserEmail">
+
+                    user@example.com
+
+                  </span>
+
+                </div>
+
+              </li>
+
+
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+
+
+              <li>
+
+                <button
+                  type="button"
+                  class="signout-btn"
+                  id="signOutBtn">
+
+                  <i class="bi bi-box-arrow-right"></i>
+
+                  Sign Out
+
+                </button>
+
+              </li>
+
+            </ul>
+
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </nav>
+
+
+
+  <!-- =========================================
+       MAIN
+       ========================================= -->
+
+  <main class="analyze-main">
+
+
+    <!-- Background decorations -->
+
+    <div class="analyze-blob blob-left"></div>
+
+    <div class="analyze-blob blob-right"></div>
+
+
+    <div class="container position-relative">
+
+
+      <!-- PAGE HEADING -->
+
+      <div class="analyze-heading">
+
+
+        <div class="analyze-label">
+
+          <i class="bi bi-stars"></i>
+
+          AI POWERED ANALYSIS
+
+        </div>
+
+
+        <h1>
+          Analyze your resume
+        </h1>
+
+
+        <p>
+
+          Upload your resume and add the job description you're applying
+          for. We'll compare them and give you useful feedback.
+
+        </p>
+
+      </div>
+
+
+
+      <!-- =========================================
+           ANALYZER CARD
+           ========================================= -->
+
+      <div class="row justify-content-center">
+
+
+        <div class="col-xl-9 col-lg-10">
+
+
+          <div class="upload-main-card">
+
+
+            <!-- TOP -->
+
+            <div class="upload-card-top">
+
+
+              <div>
+
+                <span class="small-step">
+                  STEP 01
+                </span>
+
+                <h2>
+                  Upload your resume
+                </h2>
+
+                <p>
+                  Start by adding the resume you want to analyze.
+                </p>
+
+              </div>
+
+
+              <div class="top-file-icon">
+
+                <i class="bi bi-file-earmark-person"></i>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 DROP ZONE
+                 ========================================= -->
+
+            <div
+              id="drop"
+              class="resume-drop-zone"
+              tabindex="0"
+              role="button">
+
+
+              <div class="drop-icon">
+
+                <i class="bi bi-cloud-arrow-up"></i>
+
+              </div>
+
+
+              <h3 id="fname">
+                Drop your resume here
+              </h3>
+
+
+              <p>
+                Drag and drop your file, or click to browse
+              </p>
+
+
+              <div class="browse-button">
+
+                <i class="bi bi-folder2-open"></i>
+
+                Browse Files
+
+              </div>
+
+
+              <small>
+                PDF or DOCX · Maximum 5 MB
+              </small>
+
+            </div>
+
+
+            <input
+              type="file"
+              id="file"
+              accept=".pdf,.doc,.docx"
+              class="d-none">
+
+
+
+            <!-- DIVIDER -->
+
+            <div class="analyze-divider">
+
+              <span></span>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 JOB DESCRIPTION
+                 ========================================= -->
+
+            <div class="job-section">
+
+
+              <div class="job-section-heading">
+
+
+                <div>
+
+                  <span class="small-step">
+                    STEP 02
+                  </span>
+
+                  <h2>
+                    Job you're applying for
+                  </h2>
+
+                  <p>
+                    Add the job description for more relevant feedback.
+                  </p>
+
+                </div>
+
+
+                <div class="top-file-icon job-icon">
+
+                  <i class="bi bi-briefcase"></i>
+
+                </div>
+
+              </div>
+
+
+
+              <div class="job-label">
+
+
+                <label for="jd">
+                  Job Description
+                </label>
+
+
+                <span>
+                  Recommended
+                </span>
+
+              </div>
+
+
+              <textarea
+                id="jd"
+                class="form-control analyze-textarea"
+                rows="7"
+                placeholder="Paste the job description here..."></textarea>
+
+
+              <div class="textarea-help">
+
+
+                <i class="bi bi-lightbulb"></i>
+
+
+                <span>
+
+                  Tip: Include the responsibilities, required skills and
+                  qualifications from the job posting.
+
+                </span>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 ERROR
+                 ========================================= -->
+
+            <div
+              id="err"
+              class="alert alert-danger d-none analyze-error"
+              role="alert">
+            </div>
+
+
+
+            <!-- =========================================
+                 ANALYZE BUTTON
+                 ========================================= -->
+
+            <div class="analyze-button-area">
+
+
+              <button
+                type="button"
+                id="go"
+                class="btn analyze-submit-btn">
+
+
+                <i class="bi bi-stars"></i>
+
+
+                <span>
+                  Analyze Resume
+                </span>
+
+
+                <i class="bi bi-arrow-right"></i>
+
+              </button>
+
+
+              <div class="privacy-text">
+
+                <i class="bi bi-shield-lock"></i>
+
+                Your resume is used only for this analysis.
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =========================================
+           BOTTOM FEATURES
+           ========================================= -->
+
+      <div class="analyze-mini-features">
+
+
+        <!-- FEATURE 1 -->
+
+        <div class="mini-feature">
+
+
+          <div class="mini-feature-icon purple">
+
+            <i class="bi bi-lightning-charge"></i>
+
+          </div>
+
+
+          <div>
+
+            <strong>
+              Quick analysis
+            </strong>
+
+            <span>
+              Get feedback in seconds
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- FEATURE 2 -->
+
+        <div class="mini-feature">
+
+
+          <div class="mini-feature-icon blue">
+
+            <i class="bi bi-shield-check"></i>
+
+          </div>
+
+
+          <div>
+
+            <strong>
+              Private
+            </strong>
+
+            <span>
+              Your resume stays secure
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- FEATURE 3 -->
+
+        <div class="mini-feature">
+
+
+          <div class="mini-feature-icon orange">
+
+            <i class="bi bi-bar-chart-line"></i>
+
+          </div>
+
+
+          <div>
+
+            <strong>
+              Useful feedback
+            </strong>
+
+            <span>
+              See what you can improve
+            </span>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+  </main>
+
+
+
+  <!-- =========================================
+       HIDDEN DEMO SKILLS
+       ========================================= -->
+
+  <div class="d-none">
+
+    <span data-k="react">React</span>
+
+    <span data-k="javascript">
+      JavaScript
+    </span>
+
+    <span data-k="html">
+      HTML
+    </span>
+
+    <span data-k="css">
+      CSS
+    </span>
+
+    <span data-k="rest api">
+      REST API
+    </span>
+
+    <span data-k="mongodb">
+      MongoDB
+    </span>
+
+    <span data-k="git">
+      Git
+    </span>
+
+    <span data-k="bootstrap">
+      Bootstrap
+    </span>
+
+    <span data-k="jquery">
+      jQuery
+    </span>
+
+    <span data-k="node.js">
+      Node.js
+    </span>
+
+    <span data-k="figma">
+      Figma
+    </span>
+
+  </div>
+
+
+
+  <!-- =========================================
+       FOOTER
+       ========================================= -->
+
+  <footer class="resume-footer">
+
+
+    <div class="container">
+
+
+      <div class="footer-inner">
+
+
+        <a
+          class="resume-brand footer-brand"
+          href="index.html">
+
+
+          <div class="brand-icon">
+
+            <i class="bi bi-file-earmark-text-fill"></i>
+
+          </div>
+
+
+          <span>
+            ResumeAI
+          </span>
+
+        </a>
+
+
+        <p>
+          Smarter resumes. Better opportunities.
+        </p>
+
+
+        <span class="footer-copy">
+          © 2026 ResumeAI
+        </span>
+
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- =========================================
+       SCRIPTS
+       ========================================= -->
+
+
+  <!-- jQuery -->
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js">
+  </script>
+
+
+  <!-- Bootstrap -->
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js">
+  </script>
+
+
+  <!-- Analyzer Logic -->
+
+  <script src="script.js"></script>
+
+
+
+  <!-- =========================================
+       PAGE JS
+       ========================================= -->
+
+  <script>
+
+    $(function () {
+
+
+      /* =========================================
+         LOGIN / PROFILE STATE
+         ========================================= */
+
+      const loggedInUser =
+        sessionStorage.getItem("user");
+
+
+      if (loggedInUser) {
+
+
+        /* User is logged in */
+
+        $("#signedOutNav")
+          .addClass("d-none");
+
+
+        $("#signedInNav")
+          .removeClass("d-none");
+
+
+        /* Exact email entered on Login page */
+
+        $("#navbarUserEmail")
+          .text(loggedInUser);
+
+
+        $("#dropdownUserEmail")
+          .text(loggedInUser);
+
+
+      }
+
+      else {
+
+
+        /*
+          No redirect.
+
+          Analyze page can still be opened while
+          we're testing the frontend.
+        */
+
+        $("#signedOutNav")
+          .removeClass("d-none");
+
+
+        $("#signedInNav")
+          .addClass("d-none");
+
+
+      }
+
+
+
+      /* =========================================
+         SIGN OUT
+         ========================================= */
+
+      $("#signOutBtn").on(
+        "click",
+        function () {
+
+
+          sessionStorage.removeItem("user");
+
+          sessionStorage.removeItem("afterLogin");
+
+          sessionStorage.removeItem("resumeFile");
+
+          sessionStorage.removeItem("jobDescription");
+
+          sessionStorage.removeItem("score");
+
+          sessionStorage.removeItem("foundSkills");
+
+          sessionStorage.removeItem("missingSkills");
+
+
+          window.location.href =
+            "index.html";
+
+
+        }
+      );
+
+
+
+      /* =========================================
+         PAGE ANIMATIONS
+         ========================================= */
+
+      setTimeout(function () {
+
+        $(".analyze-heading")
+          .addClass("show");
+
+      }, 100);
+
+
+      setTimeout(function () {
+
+        $(".upload-main-card")
+          .addClass("show");
+
+      }, 220);
+
+
+      setTimeout(function () {
+
+        $(".analyze-mini-features")
+          .addClass("show");
+
+      }, 380);
+
+
+
+      /* =========================================
+         NAVBAR SCROLL
+         ========================================= */
+
+      $(window).on(
+        "scroll",
+        function () {
+
+
+          $(".resume-navbar")
+            .toggleClass(
+
+              "navbar-scrolled",
+
+              $(window).scrollTop() > 20
+
+            );
+
+
+        }
+      );
+
+
+    });
+
+  </script>
+
+
+</body>
+
+</html>
