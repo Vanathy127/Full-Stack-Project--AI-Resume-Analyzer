@@ -44,3 +44,874 @@ h1, h2, h3, .navbar-brand {
   font-size: 0.9rem;
   margin: 0 6px 6px 0;
 }
+/* =========================================================
+   RESUMEAI SHARED THEME
+   ========================================================= */
+
+:root {
+  --resume-brand: #5146ff;
+  --resume-brand-dark: #4135ed;
+  --resume-purple: #7c3aed;
+  --resume-blue: #2563eb;
+  --resume-bg: #f4f6ff;
+  --resume-bg-blue: #edf3ff;
+  --resume-text: #111327;
+  --resume-muted: #6b7280;
+  --resume-border: #e5e8f4;
+  --resume-white: #ffffff;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+
+/* =========================================================
+   LOGIN PAGE
+   ========================================================= */
+
+.login-page {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    linear-gradient(
+      135deg,
+      #f8f9ff 0%,
+      #eef3ff 48%,
+      #f7f5ff 100%
+    );
+  color: var(--resume-text);
+  position: relative;
+  overflow-x: hidden;
+}
+
+
+/* Background floating shapes */
+
+.login-bg-shape {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(2px);
+  opacity: 0.55;
+}
+
+.shape-one {
+  width: 420px;
+  height: 420px;
+  background: rgba(82, 70, 255, 0.08);
+  left: -180px;
+  top: 120px;
+  animation: shapeFloat 9s ease-in-out infinite;
+}
+
+.shape-two {
+  width: 350px;
+  height: 350px;
+  background: rgba(37, 99, 235, 0.07);
+  right: -130px;
+  bottom: -90px;
+  animation: shapeFloat 11s ease-in-out infinite reverse;
+}
+
+.shape-three {
+  width: 180px;
+  height: 180px;
+  background: rgba(124, 58, 237, 0.07);
+  right: 32%;
+  top: -70px;
+  animation: shapeFloat 8s ease-in-out infinite;
+}
+
+
+@keyframes shapeFloat {
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+
+  50% {
+    transform: translateY(22px) translateX(12px);
+  }
+
+}
+
+
+/* Navbar */
+
+.login-nav {
+  position: relative;
+  z-index: 10;
+  padding: 25px 0;
+}
+
+.resume-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--resume-brand);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.resume-brand:hover {
+  color: var(--resume-brand-dark);
+}
+
+.brand-icon {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  color: white;
+  background:
+    linear-gradient(
+      135deg,
+      var(--resume-brand),
+      var(--resume-purple)
+    );
+  box-shadow:
+    0 8px 22px
+    rgba(81, 70, 255, 0.22);
+}
+
+
+/* Main */
+
+.login-main {
+  min-height: calc(100vh - 95px);
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  padding: 25px 0 65px;
+}
+
+
+/* Left copy */
+
+.login-copy {
+  max-width: 520px;
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.login-copy.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ai-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border-radius: 50px;
+  background: #eeebff;
+  color: var(--resume-purple);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+}
+
+.login-copy h1 {
+  font-size: clamp(
+    2.6rem,
+    5vw,
+    4.3rem
+  );
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  margin-bottom: 22px;
+}
+
+.login-copy h1 span {
+  display: block;
+  color: var(--resume-brand);
+}
+
+.login-copy > p {
+  max-width: 470px;
+  color: var(--resume-muted);
+  font-size: 1.03rem;
+  line-height: 1.7;
+}
+
+
+/* Resume visual */
+
+.login-resume-wrap {
+  position: relative;
+  width: 390px;
+  margin:
+    45px auto
+    0 55px;
+
+  opacity: 0;
+  transform:
+    translateY(30px)
+    rotate(-3deg);
+
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.login-resume-wrap.show {
+  opacity: 1;
+  transform:
+    translateY(0)
+    rotate(-3deg);
+}
+
+.login-resume-card {
+  background: white;
+  border:
+    1px solid
+    rgba(229, 232, 244, 0.9);
+
+  border-radius: 18px;
+  padding: 27px;
+
+  box-shadow:
+    0 25px 70px
+    rgba(54, 65, 120, 0.15);
+
+  animation:
+    resumeFloat
+    5s ease-in-out infinite;
+}
+
+
+@keyframes resumeFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-9px);
+  }
+
+}
+
+
+.resume-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  padding-bottom: 18px;
+  border-bottom:
+    1px solid
+    var(--resume-border);
+}
+
+.resume-top h5 {
+  margin: 0 0 3px;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.resume-top p {
+  margin: 0;
+  font-size: 0.73rem;
+  color: var(--resume-muted);
+}
+
+.resume-mini-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #efedff;
+  color: var(--resume-brand);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.mini-section {
+  margin-top: 19px;
+}
+
+.mini-section > span {
+  display: block;
+  font-size: 0.61rem;
+  color: var(--resume-brand);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 7px;
+}
+
+.mini-section strong {
+  display: block;
+  font-size: 0.82rem;
+}
+
+.mini-section small {
+  color: var(--resume-muted);
+  font-size: 0.7rem;
+}
+
+.mini-tags {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.mini-tags span {
+  background: #edf1ff;
+  color: #4b50a7;
+  padding: 5px 9px;
+  border-radius: 50px;
+  font-size: 0.63rem;
+  font-weight: 600;
+}
+
+.resume-lines {
+  margin-top: 22px;
+}
+
+.resume-lines div {
+  height: 7px;
+  border-radius: 20px;
+  background: #eef0f7;
+  margin-bottom: 8px;
+}
+
+.resume-lines div:nth-child(1) {
+  width: 92%;
+}
+
+.resume-lines div:nth-child(2) {
+  width: 75%;
+}
+
+.resume-lines div:nth-child(3) {
+  width: 84%;
+}
+
+
+/* Floating score */
+
+.floating-score {
+  position: absolute;
+  right: -65px;
+  top: 85px;
+
+  background: white;
+  border:
+    1px solid
+    var(--resume-border);
+
+  border-radius: 15px;
+  padding: 13px 17px;
+
+  box-shadow:
+    0 15px 40px
+    rgba(57, 64, 112, 0.16);
+
+  transform: rotate(4deg);
+
+  animation:
+    scoreFloat
+    4.5s ease-in-out infinite;
+}
+
+.floating-score strong {
+  color: #10a36c;
+  font-size: 1.65rem;
+  font-weight: 800;
+}
+
+.floating-score span {
+  color: var(--resume-muted);
+  font-size: 0.72rem;
+}
+
+.floating-score small {
+  display: block;
+  margin-top: 3px;
+  color: #159467;
+  font-size: 0.66rem;
+  font-weight: 600;
+}
+
+
+@keyframes scoreFloat {
+
+  0%,
+  100% {
+    transform:
+      rotate(4deg)
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      rotate(4deg)
+      translateY(-7px);
+  }
+
+}
+
+
+/* Decorative icons */
+
+.floating-icon {
+  position: absolute;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--resume-brand);
+  background: white;
+
+  border:
+    1px solid
+    var(--resume-border);
+
+  box-shadow:
+    0 8px 25px
+    rgba(60, 69, 120, 0.12);
+}
+
+.floating-icon-one {
+  width: 37px;
+  height: 37px;
+  border-radius: 10px;
+
+  left: -45px;
+  top: 60px;
+
+  animation:
+    iconFloat 4s
+    ease-in-out infinite;
+}
+
+.floating-icon-two {
+  width: 31px;
+  height: 31px;
+  border-radius: 9px;
+
+  right: -18px;
+  bottom: 20px;
+
+  animation:
+    iconFloat 5s
+    ease-in-out infinite reverse;
+}
+
+
+@keyframes iconFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+}
+
+
+/* Login Card */
+
+.login-card {
+  background:
+    rgba(255, 255, 255, 0.96);
+
+  border:
+    1px solid
+    rgba(226, 229, 242, 0.95);
+
+  border-radius: 22px;
+
+  padding:
+    38px 38px 32px;
+
+  box-shadow:
+    0 25px 75px
+    rgba(50, 61, 120, 0.13);
+
+  opacity: 0;
+
+  transform:
+    translateY(25px)
+    scale(0.985);
+
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.login-card.show {
+  opacity: 1;
+  transform:
+    translateY(0)
+    scale(1);
+}
+
+.login-card-heading h2 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  margin-bottom: 7px;
+}
+
+.login-card-heading > p {
+  color: var(--resume-muted);
+  font-size: 0.91rem;
+  line-height: 1.55;
+  margin-bottom: 27px;
+}
+
+.login-mobile-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  color: var(--resume-brand);
+  font-weight: 800;
+  margin-bottom: 28px;
+}
+
+
+/* Form */
+
+.resume-label {
+  color: #36384c;
+  font-size: 0.81rem;
+  font-weight: 600;
+}
+
+.input-icon-wrap {
+  position: relative;
+}
+
+.input-icon-wrap > i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+
+  transform:
+    translateY(-50%);
+
+  color: #969bab;
+  z-index: 2;
+}
+
+.resume-input {
+  min-height: 49px;
+
+  padding-left: 43px;
+
+  border:
+    1px solid
+    #dde1ed;
+
+  border-radius: 10px;
+
+  font-size: 0.88rem;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.password-input {
+  padding-right: 45px;
+}
+
+.resume-input:focus {
+  border-color:
+    var(--resume-brand);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(81, 70, 255, 0.1);
+
+  transform:
+    translateY(-1px);
+}
+
+.password-toggle {
+  position: absolute;
+
+  right: 12px;
+  top: 50%;
+
+  transform:
+    translateY(-50%);
+
+  border: 0;
+  background: transparent;
+  color: #969bab;
+
+  padding: 5px;
+}
+
+.login-small {
+  color: var(--resume-muted);
+  font-size: 0.79rem;
+}
+
+.login-link {
+  color: var(--resume-brand);
+  font-size: 0.79rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-link:hover {
+  color: var(--resume-brand-dark);
+}
+
+
+/* Main button */
+
+.resume-primary-btn {
+  min-height: 51px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  color: white;
+
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #5546ff,
+      #493cff,
+      #6046ff
+    );
+
+  box-shadow:
+    0 10px 24px
+    rgba(81, 70, 255, 0.25);
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.resume-primary-btn:hover {
+  color: white;
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 15px 30px
+    rgba(81, 70, 255, 0.32);
+}
+
+.resume-primary-btn i {
+  transition:
+    transform 0.2s ease;
+}
+
+.resume-primary-btn:hover i {
+  transform:
+    translateX(4px);
+}
+
+
+/* Divider */
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  margin: 23px 0;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background:
+    var(--resume-border);
+}
+
+.login-divider span {
+  color: #9a9eab;
+  font-size: 0.72rem;
+}
+
+
+/* Google */
+
+.google-login-btn {
+  min-height: 49px;
+
+  border:
+    1px solid
+    #dde1ed;
+
+  border-radius: 10px;
+
+  background: white;
+  color: #2f3142;
+
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.google-login-btn:hover {
+  background: #f8f9ff;
+  border-color: #d4d8e7;
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 7px 20px
+    rgba(55, 63, 110, 0.08);
+}
+
+
+/* Bottom text */
+
+.login-create {
+  text-align: center;
+
+  color: var(--resume-muted);
+
+  font-size: 0.8rem;
+
+  margin:
+    22px 0 0;
+}
+
+.login-create a {
+  color: var(--resume-brand);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.login-security {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  color: #9a9eab;
+  font-size: 0.69rem;
+
+  margin-top: 16px;
+}
+
+.login-security i {
+  color: #777ce0;
+}
+
+
+/* Status */
+
+#statusBox {
+  border-radius: 10px;
+  font-size: 0.8rem;
+}
+
+
+/* Responsive */
+
+@media (max-width: 1199.98px) {
+
+  .login-resume-wrap {
+    width: 330px;
+    margin-left: 20px;
+  }
+
+  .floating-score {
+    right: -45px;
+  }
+
+}
+
+
+@media (max-width: 991.98px) {
+
+  .login-nav {
+    display: none;
+  }
+
+  .login-main {
+    min-height: 100vh;
+    padding: 35px 0;
+  }
+
+  .login-card {
+    padding: 32px 28px;
+  }
+
+}
+
+
+@media (max-width: 575.98px) {
+
+  .login-main {
+    padding: 20px 12px;
+  }
+
+  .login-card {
+    padding: 27px 20px;
+    border-radius: 18px;
+  }
+
+  .login-card-heading h2 {
+    font-size: 1.6rem;
+  }
+
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  .login-bg-shape,
+  .login-resume-card,
+  .floating-score,
+  .floating-icon {
+    animation: none;
+  }
+
+}
