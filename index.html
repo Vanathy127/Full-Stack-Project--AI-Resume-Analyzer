@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Redline | AI Resume Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;700&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-sm bg-white border-bottom">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#"><span class="hl px-1">Red</span>line</a>
+      <div class="navbar-nav ms-auto flex-row gap-3">
+        <a class="nav-link" href="#analyze">Analyze</a>
+        <a class="nav-link" href="#results">Results</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    <!-- Hero -->
+    <h1 class="display-5 fw-bold">See what a recruiter's software sees in your <span class="hl">resume</span>.</h1>
+    <p class="lead text-secondary mb-5">Upload your resume, paste the job description, and get a match score, the skills you already show, and the ones you're missing.</p>
+
+    <div class="row g-4" id="analyze">
+      <!-- Upload form -->
+      <div class="col-lg-5">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h2 class="h5 mb-3">Your resume</h2>
+
+            <div id="drop" class="drop text-center p-4 rounded" tabindex="0" role="button">
+              <strong id="fname" class="d-block">Drop your resume here</strong>
+              <small class="text-secondary">PDF or DOCX, up to 5 MB, or click to browse</small>
+            </div>
+            <input type="file" id="file" accept=".pdf,.doc,.docx" class="d-none">
+
+            <label for="jd" class="form-label mt-4 fw-medium">Job description</label>
+            <textarea id="jd" class="form-control" rows="6" placeholder="Paste the job posting you're applying to"></textarea>
+
+            <div id="err" class="alert alert-danger py-2 mt-3 d-none" role="alert"></div>
+
+            <button id="go" class="btn btn-primary w-100 mt-3">Analyze resume</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resume preview -->
+      <div class="col-lg-7">
+        <div class="card shadow-sm h-100">
+          <div class="card-body doc">
+            <h3 class="h5 mb-0">Aarav Mehta</h3>
+            <div class="text-secondary mb-3">Frontend Developer · Chennai · aarav@email.com</div>
+            <p><b>Summary.</b> Computer science student building <span data-k="react">React</span> web apps with a focus on clean UI and accessibility.</p>
+            <p><b>Projects.</b> Built a campus events site using <span data-k="javascript">JavaScript</span>, <span data-k="html">HTML</span> and <span data-k="css">CSS</span>. Connected a <span data-k="rest api">REST API</span> to a <span data-k="mongodb">MongoDB</span> backend and tracked work with <span data-k="git">Git</span> in a team of four.</p>
+            <p class="mb-0"><b>Skills.</b> <span data-k="bootstrap">Bootstrap</span>, <span data-k="jquery">jQuery</span>, <span data-k="node.js">Node.js</span>, <span data-k="figma">Figma</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results (hidden until Analyze) -->
+    <div class="card shadow-sm mt-4 d-none" id="results">
+      <div class="card-body">
+        <h2 class="h5">Match with this job: <span id="pct">0%</span></h2>
+        <div class="progress mb-2" style="height:14px">
+          <div id="bar" class="progress-bar" role="progressbar" style="width:0%"></div>
+        </div>
+        <p id="summary" class="text-secondary"></p>
+
+        <h3 class="h6 mt-4">Skills found</h3>
+        <div id="ok" class="mb-3"></div>
+
+        <h3 class="h6">Skills to add</h3>
+        <div id="miss" class="mb-3"></div>
+
+        <h3 class="h6">Suggestions</h3>
+        <ul id="tips" class="mb-0"></ul>
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center text-secondary small pb-4">
+    Demo Review 1: frontend only. Results are sample data until the backend is connected.
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+$(function () {
+  const SKILLS = ["react", "javascript", "typescript", "html", "css", "node.js", "rest api",
+    "mongodb", "sql", "git", "docker", "python", "figma", "bootstrap", "jquery", "tailwind", "aws", "testing"];
+  let file = null;
+
+  function showError(msg) {
+    $("#err").text(msg).toggleClass("d-none", !msg);
+  }
+
+  // ---- File upload: click, keyboard, drag and drop ----
+  $("#drop").on("click", () => $("#file").trigger("click"));
+  $("#drop").on("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      $("#file").trigger("click");
+    }
+  });
+  $("#file").on("change", function () {
+    setFile(this.files[0]);
+  });
+  $("#drop").on("dragover dragleave drop", function (e) {
+    e.preventDefault();
+    $(this).toggleClass("over", e.type === "dragover");
+    if (e.type === "drop") setFile(e.originalEvent.dataTransfer.files[0]);
+  });
+
+  function setFile(f) {
+    if (!f) return;
+    if (!/\.(pdf|docx?)$/i.test(f.name)) return showError("Upload a PDF or DOCX file.");
+    if (f.size > 5 * 1024 * 1024) return showError("That file is over 5 MB. Upload a smaller one.");
+    file = f;
+    showError("");
+    $("#fname").text(f.name);
+  }
+
+  // ---- Analyze button ----
+  $("#go").on("click", function () {
+    const jd = $("#jd").val().toLowerCase();
+    if (!file) return showError("Upload your resume first.");
+    if (jd.trim().length < 20) return showError("Paste the job description (at least a few lines).");
+    showError("");
+
+    const $btn = $(this).prop("disabled", true).text("Analyzing...");
+
+    /* TODO (backend): send `file` and `jd` to your API, e.g.
+       const fd = new FormData(); fd.append("resume", file); fd.append("jd", jd);
+       $.ajax({ url: "/api/analyze", method: "POST", data: fd, processData: false, contentType: false })
+         .done(data => render(data.score, data.found, data.missing));
+       For the demo we compare the sample resume with the job description. */
+    setTimeout(function () {
+      const resumeSkills = $("[data-k]").map(function () { return $(this).data("k"); }).get();
+      const wanted = SKILLS.filter(k => jd.includes(k));
+      const found = wanted.filter(k => resumeSkills.includes(k));
+      const missing = wanted.filter(k => !resumeSkills.includes(k));
+      const pct = wanted.length ? Math.round(found.length / wanted.length * 100) : 0;
+      render(pct, found, missing);
+      $btn.prop("disabled", false).text("Analyze resume");
+    }, 900);
+  });
+
+  // ---- Show results ----
+  function badges(list, cls) {
+    if (!list.length) return '<span class="text-secondary">None</span>';
+    return list.map(k => `<span class="badge rounded-pill text-bg-${cls}">${k}</span>`).join("");
+  }
+
+  function render(pct, found, missing) {
+    $("[data-k]").each(function () {
+      $(this).toggleClass("hit", found.includes($(this).data("k")));
+    });
+
+    $("#pct").text(pct + "%");
+    $("#bar").css("width", pct + "%")
+      .toggleClass("bg-success", pct >= 70)
+      .toggleClass("bg-warning", pct >= 40 && pct < 70)
+      .toggleClass("bg-danger", pct < 40);
+    $("#summary").text(found.length + " of " + (found.length + missing.length) +
+      " skills from the job description appear in your resume.");
+    $("#ok").html(badges(found, "success"));
+    $("#miss").html(badges(missing, "danger"));
+
+    const tips = missing.map(k => `<li>Add <b>${k}</b> to your skills, or show it in a project, if you've used it.</li>`);
+    tips.push(missing.length
+      ? "<li>Start each project bullet with what you built and the result.</li>"
+      : "<li>Strong match. Add numbers to your project bullets, like users, load time, or team size.</li>");
+    $("#tips").html(tips.join(""));
+
+    $("#results").removeClass("d-none");
+    $("html, body").animate({ scrollTop: $("#results").offset().top - 20 }, 400);
+  }
+});
