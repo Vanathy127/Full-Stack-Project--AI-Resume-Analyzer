@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in · ResumeScan AI</title>
+
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#10151f;
+    --ink-soft:#1a2233;
+    --paper-dim:#eae7de;
+    --signal:#3ecf8e;
+    --amber:#e8a33d;
+    --slate-dark:#5a6472;
+  }
+  body{
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background:#f7f5f0;
+  }
+
+  /* ---- left stage panel ---- */
+  .stage{
+    background:linear-gradient(180deg,var(--ink) 0%, var(--ink-soft) 100%);
+    min-height:100vh;
+    position:relative;
+    color:#f7f5f0;
+    overflow:hidden;
+  }
+  .stage::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size:36px 36px;
+    pointer-events:none;
+  }
+  .brandmark{
+    font-family:Georgia, 'Times New Roman', serif;
+    font-size:1.25rem;
+  }
+  .brandmark .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--signal);
+    box-shadow:0 0 10px var(--signal);
+    display:inline-block;
+  }
+
+  .doc-card{
+    width:100%;
+    max-width:380px;
+    background:#f7f5f0;
+    color:#1c2230;
+    border-radius:4px;
+    padding:2.2rem 1.9rem;
+    box-shadow:0 40px 90px rgba(0,0,0,0.55);
+    transform:rotate(-2deg);
+    position:relative;
+  }
+  .doc-card .doc-name{ font-family:Georgia, serif; font-size:1.3rem; }
+  .doc-card .doc-role{ font-size:.78rem; color:var(--slate-dark); }
+  .doc-line{
+    height:8px;
+    border-radius:2px;
+    background:var(--paper-dim);
+    margin-bottom:.6rem;
+  }
+  .badge-skill{
+    background:rgba(62,207,142,0.14) !important;
+    color:#1a7a52 !important;
+    border:1px solid rgba(62,207,142,0.35);
+    font-weight:500;
+  }
+  .badge-skill.amber{
+    background:rgba(232,163,61,0.16) !important;
+    color:#9a6414 !important;
+    border-color:rgba(232,163,61,0.4);
+  }
+
+  .scanline{
+    position:absolute;
+    left:1.9rem; right:1.9rem;
+    height:2px;
+    background:linear-gradient(90deg, transparent, var(--signal) 20%, var(--signal) 80%, transparent);
+    box-shadow:0 0 16px 2px rgba(62,207,142,0.7);
+    animation:sweep 4.5s ease-in-out infinite;
+    border-radius:2px;
+  }
+  @keyframes sweep{
+    0%{ top:8%; opacity:0; }
+    8%{ opacity:1; }
+    50%{ top:92%; opacity:1; }
+    58%{ opacity:0; }
+    100%{ top:92%; opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .scanline{ animation:none; top:50%; opacity:.6; }
+  }
+
+  .stage-caption{
+    max-width:380px;
+    font-size:.9rem;
+    color:#8891a1;
+    line-height:1.55;
+  }
+  .stage-caption b{ color:#f7f5f0; }
+
+  /* ---- form panel ---- */
+  .form-panel{ min-height:100vh; }
+  .form-panel h1{
+    font-family:Georgia, 'Times New Roman', serif;
+    font-weight:400;
+  }
+  .btn-signal{
+    background-color:var(--signal);
+    border-color:var(--signal);
+    color:#0d1310;
+    font-weight:600;
+  }
+  .btn-signal:hover{
+    background-color:#35bd7e;
+    border-color:#35bd7e;
+    color:#0d1310;
+  }
+  .link-signal{ color:#1a7a52; }
+  .link-signal:hover{ color:#145c3e; }
+
+  .form-control:focus{
+    border-color:var(--signal);
+    box-shadow:0 0 0 .2rem rgba(62,207,142,0.18);
+  }
+
+  @media (max-width: 991.98px){
+    .stage{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- Left: scanned document visual -->
+    <div class="col-lg-6 d-none d-lg-flex flex-column justify-content-between stage p-5">
+      <div class="brandmark position-relative"><span class="dot me-2"></span>ResumeScan AI</div>
+
+      <div class="d-flex justify-content-center position-relative">
+        <div class="doc-card">
+          <div class="scanline"></div>
+          <div class="doc-name">Priya Nandakumar</div>
+          <div class="doc-role mb-3">Backend Engineer · 4 yrs experience</div>
+          <hr>
+          <div class="doc-line" style="width:90%"></div>
+          <div class="doc-line" style="width:70%"></div>
+          <div class="doc-line" style="width:80%"></div>
+          <hr>
+          <span class="badge rounded-pill badge-skill me-1 mb-1">Python</span>
+          <span class="badge rounded-pill badge-skill me-1 mb-1">System Design</span>
+          <span class="badge rounded-pill badge-skill amber me-1 mb-1">Leadership</span>
+          <span class="badge rounded-pill badge-skill me-1 mb-1">PostgreSQL</span>
+          <hr>
+          <div class="doc-line" style="width:55%"></div>
+          <div class="doc-line" style="width:90%"></div>
+        </div>
+      </div>
+
+      <p class="stage-caption position-relative mb-0">
+        <b>Every resume, read like a recruiter would.</b><br>
+        Sign in to score resumes against a job description, surface missing keywords, and track candidates in one place.
+      </p>
+    </div>
+
+    <!-- Right: login form -->
+    <div class="col-lg-6 d-flex align-items-center justify-content-center form-panel bg-white">
+      <div class="w-100 p-4" style="max-width:380px;">
+
+        <h1 class="h2 mb-2">Welcome back</h1>
+        <p class="text-secondary mb-4">
+          New here? <a href="#" class="link-signal text-decoration-none">Create an account</a> to start analyzing resumes.
+        </p>
+
+        <form id="loginForm" novalidate>
+          <div class="mb-3">
+            <label for="email" class="form-label small text-secondary">Email</label>
+            <input type="email" class="form-control form-control-lg" id="email" placeholder="you@company.com" required>
+            <div class="invalid-feedback">Enter a valid email address.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label small text-secondary">Password</label>
+            <input type="password" class="form-control form-control-lg" id="password" placeholder="••••••••" required minlength="6">
+            <div class="invalid-feedback">Password must be at least 6 characters.</div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="remember">
+              <label class="form-check-label small text-secondary" for="remember">Keep me signed in</label>
+            </div>
+            <a href="#" class="small link-signal text-decoration-none">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn btn-signal btn-lg w-100" id="submitBtn">Sign in</button>
+
+          <div id="statusBox" class="alert mt-3 d-none" role="alert"></div>
+        </form>
+
+        <div class="d-flex align-items-center my-4">
+          <hr class="flex-grow-1">
+          <span class="px-3 text-secondary small">or</span>
+          <hr class="flex-grow-1">
+        </div>
+
+        <button type="button" class="btn btn-dark btn-lg w-100" id="googleBtn">
+          <i class="bi bi-google me-2"></i>Continue with Google
+        </button>
+
+        <p class="text-center text-secondary small mt-4">
+          By signing in, you agree to our <a href="#" class="link-signal">Terms</a> and <a href="#" class="link-signal">Privacy Policy</a>.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- Bootstrap JS bundle (needed if you add modals/dropdowns later) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
+<script>
+$(function () {
+
+  function setFieldError($input, hasError) {
+    $input.toggleClass('is-invalid', hasError);
+  }
+
+  function showStatus(message, type) {
+    // type: 'success' or 'danger'
+    $('#statusBox')
+      .removeClass('d-none alert-success alert-danger')
+      .addClass('alert-' + type)
+      .text(message);
+  }
+
+  $('#loginForm').on('submit', function (e) {
+    e.preventDefault();
+
+    var $email = $('#email');
+    var $password = $('#password');
+    var $btn = $('#submitBtn');
+
+    $('#statusBox').addClass('d-none');
+
+    var emailValid = $email[0].checkValidity();
+    var passwordValid = $password[0].checkValidity();
+    setFieldError($email, !emailValid);
+    setFieldError($password, !passwordValid);
+
+    if (!emailValid || !passwordValid) return;
+
+    var payload = {
+      email: $.trim($email.val()),
+      password: $password.val(),
+      remember: $('#remember').is(':checked')
+    };
+    
+        $btn.prop('disabled', true).text('Signing in…');
+
+    /* TODO (backend): replace this demo login with the real API call:
+       $.ajax({ url: '/api/auth/login', method: 'POST', contentType: 'application/json', data: JSON.stringify(payload) })
+         .done(...).fail(...); */
+    setTimeout(function () {
+      sessionStorage.setItem('user', payload.email);
+      showStatus('Signed in successfully. Redirecting…', 'success');
+      setTimeout(function () { window.location.href = 'index.html'; }, 800);
+    }, 700);
+    
+  });
+
+  // clear validation state as the user types
+  $('#email, #password').on('input', function () {
+    $(this).removeClass('is-invalid');
+  });
+
+    $('#googleBtn').on('click', function () {
+    // TODO (backend): window.location.href = '/api/auth/google';
+    sessionStorage.setItem('user', 'google-demo-user');
+    window.location.href = 'index.html';
+  });
+
+});
+</script>
+
+</body>
+</html>
