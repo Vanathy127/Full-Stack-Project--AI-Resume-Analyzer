@@ -1220,6 +1220,283 @@
 
     });
   </script>
+  
+<script>
+$(function () {
+
+  // =============================================
+  // LOAD ANALYSIS RESULT
+  // =============================================
+
+  const data = JSON.parse(
+    sessionStorage.getItem("result") || "null"
+  );
+
+  if (!data) {
+    window.location.href = "analyze.html";
+    return;
+  }
+
+  const score = Number(data.score) || 0;
+  const found = Array.isArray(data.found) ? data.found : [];
+  const missing = Array.isArray(data.missing) ? data.missing : [];
+  const suggestions = Array.isArray(data.suggestions)
+    ? data.suggestions
+    : [];
+
+  // =============================================
+  // PROFILE
+  // =============================================
+
+  let loggedInUser = sessionStorage.getItem("user");
+  let userEmail = "";
+
+  if (loggedInUser) {
+    try {
+      const user = JSON.parse(loggedInUser);
+      userEmail = user.email || user.name || loggedInUser;
+    } catch (err) {
+      userEmail = loggedInUser;
+    }
+  }
+
+  if (userEmail) {
+    $("#signedOutNav").addClass("d-none");
+    $("#signedInNav").removeClass("d-none");
+    $("#navbarUserEmail").text(userEmail);
+    $("#dropdownUserEmail").text(userEmail);
+  } else {
+    $("#signedOutNav").removeClass("d-none");
+    $("#signedInNav").addClass("d-none");
+  }
+
+  // =============================================
+  // FILE NAME
+  // =============================================
+
+  const resumeFile = sessionStorage.getItem("resumeFile");
+
+  if (resumeFile) {
+    $("#resultFileName").text(resumeFile);
+  }
+
+  // =============================================
+  // OVERALL SCORE
+  // =============================================
+
+  $("#overallScore")
+    .attr("data-score", score)
+    .text("0");
+
+  $(".good-score-pill").text(
+    score >= 70 ? "Good Score" :
+    score >= 40 ? "Needs Improvement" :
+    "Keep Improving"
+  );
+
+  // =============================================
+  // SUMMARY
+  // =============================================
+
+  if (data.summary) {
+    $(".page-heading").append(
+      $("<p>")
+        .addClass("text-secondary mt-2")
+        .text(data.summary)
+    );
+  }
+
+  // =============================================
+  // SKILL TAGS
+  // =============================================
+
+  function fillTags(container, list, className) {
+    const $container = $(container).empty();
+
+    list.forEach(function (skill) {
+      $("<span>")
+        .addClass("tag " + className)
+        .text(skill)
+        .appendTo($container);
+    });
+  }
+
+  const $skillContainers = $(".skills-tags");
+
+  if ($skillContainers.length >= 2) {
+    fillTags($skillContainers.eq(0), found, "tag-found");
+    fillTags($skillContainers.eq(1), missing, "tag-consider");
+  }
+
+  // Update skills count description
+  $(".skills-tags").eq(0)
+    .prev(".section-sub")
+    .text("Found " + found.length + " relevant skills in your resume.");
+
+  // =============================================
+  // STRENGTHS AND AREAS TO IMPROVE
+  // =============================================
+
+  const $strengthList = $(".list-clean.strength").empty();
+  const $improveList = $(".list-clean.improve").empty();
+
+  found.forEach(function (skill) {
+    $("<li>")
+      .append(
+        $("<i>").addClass("bi bi-check-circle-fill"),
+        document.createTextNode(skill)
+      )
+      .appendTo($strengthList);
+  });
+
+  if (!found.length) {
+    $("<li>").text("No matching skills were returned.").appendTo($strengthList);
+  }
+
+  suggestions.forEach(function (suggestion) {
+    $("<li>")
+      .append(
+        $("<i>").addClass("bi bi-exclamation-triangle-fill"),
+        document.createTextNode(suggestion)
+      )
+      .appendTo($improveList);
+  });
+
+  missing.forEach(function (skill) {
+    $("<li>")
+      .append(
+        $("<i>").addClass("bi bi-exclamation-triangle-fill"),
+        document.createTextNode("Consider adding " + skill + " if you have this skill.")
+      )
+      .appendTo($improveList);
+  });
+
+  // =============================================
+  // SIGN OUT
+  // =============================================
+
+  $("#signOutBtn").on("click", function () {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("afterLogin");
+    sessionStorage.removeItem("resumeFile");
+    sessionStorage.removeItem("jobDescription");
+    sessionStorage.removeItem("score");
+    sessionStorage.removeItem("foundSkills");
+    sessionStorage.removeItem("missingSkills");
+    sessionStorage.removeItem("result");
+
+    window.location.href = "index.html";
+  });
+
+  // =============================================
+  // PAGE ENTRANCE
+  // =============================================
+
+  setTimeout(function () {
+    $(".heading-area").addClass("show");
+  }, 80);
+
+  $(".result-card").each(function (index) {
+    const card = $(this);
+
+    setTimeout(function () {
+      card.addClass("show");
+    }, 130 + (index * 80));
+  });
+
+  // =============================================
+  // NUMBER COUNTER
+  // =============================================
+
+  function animateNumber(element, target, duration) {
+    const startTime = performance.now();
+
+    function update(currentTime) {
+      const progress = Math.min(
+        (currentTime - startTime) / duration,
+        1
+      );
+
+      element.text(Math.round(target * progress));
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      }
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  animateNumber($("#overallScore"), score, 900);
+
+  // =============================================
+  // SCORE RING
+  // =============================================
+
+  $("#scoreRing").css(
+    "background",
+    "conic-gradient(var(--blue) " +
+      score + "%, #edeef7 " + score + "% 100%)"
+  );
+
+  // =============================================
+  // METRIC CARDS
+  // =============================================
+
+  // The backend currently returns one overall score.
+  // Do not present made-up content, skills, job-match,
+  // or formatting scores as if the backend calculated them.
+
+  $(".counter").each(function () {
+    $(this).text("—");
+  });
+
+  $(".progress-bar").each(function () {
+    $(this).css("width", "0%");
+  });
+
+  // =============================================
+  // SKILL TAG ANIMATIONS
+  // =============================================
+
+  $(".tag").each(function (index) {
+    const tag = $(this);
+
+    setTimeout(function () {
+      tag.addClass("show");
+    }, 150 + (index * 70));
+  });
+
+  // =============================================
+  // STRENGTH / IMPROVEMENT REVEAL
+  // =============================================
+
+  function revealBoxes() {
+    $(".reveal-box").each(function () {
+      const element = $(this);
+
+      const elementTop = element.offset().top;
+
+      const screenBottom =
+        $(window).scrollTop() +
+        $(window).height() -
+        50;
+
+      if (screenBottom > elementTop) {
+        element.addClass("show");
+      }
+    });
+  }
+
+  revealBoxes();
+
+  $(window).on("scroll", revealBoxes);
+
+});
+</script>
+</body>
+</html>
 
 </body>
 </html>

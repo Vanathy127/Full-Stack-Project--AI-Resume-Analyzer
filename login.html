@@ -540,179 +540,70 @@
          NORMAL LOGIN
       ========================================= */
 
-      $("#loginForm").on("submit", function (e) {
+      
+$("#loginForm").on("submit", function (e) {
+  e.preventDefault();
+
+  const $email = $("#email");
+  const $password = $("#password");
+  const $btn = $("#submitBtn");
+
+  $("#statusBox").addClass("d-none");
+
+  const emailValid = $email[0].checkValidity();
+  const passwordValid = $password[0].checkValidity();
+
+  setFieldError($email, !emailValid);
+  setFieldError($password, !passwordValid);
+
+  if (!emailValid || !passwordValid) return;
+
+  $btn.prop("disabled", true).text("Signing in...");
+
+  $.ajax({
+    url: "/api/auth/login",
+    method: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({
+      email: $.trim($email.val()),
+      password: $password.val()
+    })
+  })
+  .done(function (response) {
+  if (!response.token) {
+    showStatus("Login response did not include a token.", "danger");
+    return;
+  }
+
+  sessionStorage.setItem("token", response.token);
+  sessionStorage.setItem("user", JSON.stringify({
+    name: response.name,
+    email: $.trim($email.val())
+  }));
+
+  showStatus("Signed in successfully. Redirecting...", "success");
+  setTimeout(continueAfterLogin, 650);
+})
+
+    showStatus("Signed in successfully. Redirecting...", "success");
+
+    setTimeout(continueAfterLogin, 650);
+  })
+  .fail(function (xhr) {
+    const message =
+      xhr.responseJSON?.message || "Sign-in failed. Check your credentials.";
+    showStatus(message, "danger");
+  })
+  .always(function () {
+    $btn.prop("disabled", false).html(
+      '<span>Sign In</span><i class="bi bi-arrow-right"></i>'
+    );
+  });
+});
 
-        e.preventDefault();
 
 
-        const $email = $("#email");
 
-        const $password = $("#password");
-
-        const $btn = $("#submitBtn");
-
-
-        $("#statusBox").addClass("d-none");
-
-
-        const emailValid =
-          $email[0].checkValidity();
-
-
-        const passwordValid =
-          $password[0].checkValidity();
-
-
-        setFieldError(
-          $email,
-          !emailValid
-        );
-
-
-        setFieldError(
-          $password,
-          !passwordValid
-        );
-
-
-        if (
-          !emailValid ||
-          !passwordValid
-        ) {
-
-          return;
-
-        }
-
-
-        const email =
-          $.trim($email.val());
-
-
-        $btn
-          .prop("disabled", true)
-          .html(
-            '<span class="spinner-border spinner-border-sm me-2"></span>Signing in...'
-          );
-
-
-        setTimeout(function () {
-
-
-          sessionStorage.setItem(
-            "user",
-            email
-          );
-
-
-          showStatus(
-            "Signed in successfully. Redirecting...",
-            "success"
-          );
-
-
-          setTimeout(function () {
-
-            continueAfterLogin();
-
-          }, 650);
-
-
-        }, 650);
-
-      });
-
-
-
-      /* =========================================
-         REMOVE ERRORS WHILE TYPING
-      ========================================= */
-
-      $("#email, #password").on(
-        "input",
-        function () {
-
-          $(this)
-            .removeClass("is-invalid");
-
-        }
-      );
-
-
-
-      /* =========================================
-         GOOGLE DEMO LOGIN
-      ========================================= */
-
-      $("#googleBtn").on(
-        "click",
-        function () {
-
-
-          const $btn = $(this);
-
-
-          $btn
-            .prop("disabled", true)
-            .html(
-              '<span class="spinner-border spinner-border-sm me-2"></span>Connecting...'
-            );
-
-
-          setTimeout(function () {
-
-
-            sessionStorage.setItem(
-              "user",
-              "google-demo-user"
-            );
-
-
-            continueAfterLogin();
-
-
-          }, 650);
-
-        }
-      );
-
-
-
-      /* =========================================
-         DEMO LINKS
-      ========================================= */
-
-      $("#forgotPassword").on(
-        "click",
-        function (e) {
-
-          e.preventDefault();
-
-          showStatus(
-            "Password recovery is not connected in this frontend demo.",
-            "info"
-          );
-
-        }
-      );
-
-
-      $("#createAccount").on(
-        "click",
-        function (e) {
-
-          e.preventDefault();
-
-          showStatus(
-            "Account creation will be connected when the backend is added.",
-            "info"
-          );
-
-        }
-      );
-
-
-    });
 
   </script>
 

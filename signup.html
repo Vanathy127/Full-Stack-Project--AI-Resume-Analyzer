@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign up · ResumeScan AI</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
+  <div class="card shadow-sm w-100" style="max-width:420px;">
+    <div class="card-body p-4">
+      <h1 class="h3 mb-1">Create your account</h1>
+      <p class="text-secondary">Already have one? <a href="login.html">Sign in</a></p>
+      <form id="signupForm" novalidate>
+        <div class="mb-3">
+          <label for="name" class="form-label small text-secondary">Name</label>
+          <input type="text" class="form-control" id="name" placeholder="Your name">
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label small text-secondary">Email</label>
+          <input type="email" class="form-control" id="email" placeholder="you@company.com">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label small text-secondary">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="At least 6 characters">
+        </div>
+        <button type="submit" class="btn btn-primary w-100" id="submitBtn">Sign up</button>
+        <div id="statusBox" class="alert mt-3 d-none" role="alert"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+$(function () {
+  function show(msg, type) {
+    $('#statusBox').removeClass('d-none alert-success alert-danger').addClass('alert-' + type).text(msg);
+  }
+  $('#signupForm').on('submit', function (e) {
+    e.preventDefault();
+    var name = $.trim($('#name').val());
+    var email = $.trim($('#email').val());
+    var password = $('#password').val();
+    if (!email || password.length < 6) {
+      return show('Enter an email and a password of at least 6 characters.', 'danger');
+    }
+    var $btn = $('#submitBtn').prop('disabled', true).text('Creating…');
+    $.ajax({
+      url: '/api/auth/signup',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ name: name, email: email, password: password })
+    })
+    .done(function (data) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('name', data.name || '');
+      show('Account created. Redirecting…', 'success');
+      setTimeout(function () { window.location.href = 'analyze.html'; }, 800);
+    })
+    .fail(function (xhr) {
+      var msg = 'Could not sign up. Try again.';
+      try { msg = JSON.parse(xhr.responseText).message || msg; } catch (err) {}
+      show(msg, 'danger');
+    })
+    .always(function () { $btn.prop('disabled', false).text('Sign up'); });
+  });
+});
+</script>
+</body>
+</html>
