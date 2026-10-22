@@ -1,3 +1,4 @@
+
 $(function () {
 
   const SKILLS = [
@@ -37,7 +38,6 @@ $(function () {
   }
 
 
-
   // =====================================================
   // FILE UPLOAD
   // =====================================================
@@ -67,7 +67,6 @@ $(function () {
     setFile(this.files[0]);
 
   });
-
 
 
   // =====================================================
@@ -106,7 +105,6 @@ $(function () {
   });
 
 
-
   // =====================================================
   // FILE VALIDATION
   // =====================================================
@@ -117,10 +115,7 @@ $(function () {
       return;
     }
 
-
-    const validFile =
-      /\.(pdf|doc|docx)$/i.test(f.name);
-
+    const validFile = /\.(pdf|doc|docx)$/i.test(f.name);
 
     if (!validFile) {
 
@@ -166,14 +161,11 @@ $(function () {
 
     file = f;
 
-
     showError("");
-
 
     $("#fname").text(
       f.name
     );
-
 
     $("#drop").addClass(
       "file-selected"
@@ -182,20 +174,16 @@ $(function () {
   }
 
 
-
   // =====================================================
   // ANALYZE BUTTON
   // =====================================================
 
   $("#go").on("click", function () {
 
-
     const jd =
       $("#jd")
         .val()
-        .trim()
-        .toLowerCase();
-
+        .trim();
 
 
     // Resume required
@@ -209,7 +197,6 @@ $(function () {
     }
 
 
-
     // Job description required
 
     if (jd.length < 20) {
@@ -221,17 +208,26 @@ $(function () {
     }
 
 
+    // Login required
+
+    const token = sessionStorage.getItem("token");
+
+    if (!token) {
+
+      sessionStorage.setItem("afterLogin", "analyze.html");
+
+      window.location.href = "login.html";
+
+      return;
+
+    }
+
 
     showError("");
 
+    const $btn = $(this);
 
-    const $btn =
-      $(this);
-
-
-    const originalButtonHTML =
-      $btn.html();
-
+    const originalButtonHTML = $btn.html();
 
 
     // Loading state
@@ -244,155 +240,70 @@ $(function () {
       );
 
 
+    // =====================================================
+    // SEND RESUME AND JOB DESCRIPTION TO BACKEND
+    // =====================================================
 
-    /*
-      FRONTEND DEMO
+    const fd = new FormData();
 
-      The resume is not actually being parsed yet.
+    fd.append("resume", file);
 
-      The hidden [data-k] elements inside analyze.html
-      act as the sample resume skills.
-
-      The job description is compared with those skills
-      to create a frontend demonstration score.
-    */
+    fd.append("jd", jd);
 
 
-    setTimeout(function () {
+    $.ajax({
+      url: "/api/analyze",
+      method: "POST",
+      data: fd,
+      processData: false,
+      contentType: false,
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
 
-
-      // =================================================
-      // GET DEMO RESUME SKILLS
-      // =================================================
-
-      const resumeSkills =
-
-        $("[data-k]")
-
-          .map(function () {
-
-            return String(
-              $(this).data("k")
-            ).toLowerCase();
-
-          })
-
-          .get();
-
-
-
-      // =================================================
-      // FIND SKILLS FROM JOB DESCRIPTION
-      // =================================================
-
-      const wanted =
-
-        SKILLS.filter(function (skill) {
-
-          return jd.includes(skill);
-
-        });
-
-
-
-      // =================================================
-      // SKILLS FOUND IN RESUME
-      // =================================================
-
-      const found =
-
-        wanted.filter(function (skill) {
-
-          return resumeSkills.includes(
-            skill
-          );
-
-        });
-
-
-
-      // =================================================
-      // MISSING SKILLS
-      // =================================================
-
-      const missing =
-
-        wanted.filter(function (skill) {
-
-          return !resumeSkills.includes(
-            skill
-          );
-
-        });
-
-
-
-      // =================================================
-      // MATCH PERCENTAGE
-      // =================================================
-
-      const percentage =
-
-        wanted.length
-
-          ? Math.round(
-              (
-                found.length /
-                wanted.length
-              ) * 100
-            )
-
-          : 0;
-
-
-
-      // =================================================
-      // SAVE ANALYSIS DATA
-      // =================================================
+    .done(function (data) {
 
       sessionStorage.setItem(
-        "resumeFile",
-        file.name
+        "result",
+        JSON.stringify(data)
       );
 
+      window.location.href = "preview.html";
 
-      sessionStorage.setItem(
-        "jobDescription",
-        jd
-      );
+    })
 
+    .fail(function (xhr) {
 
-      sessionStorage.setItem(
-        "score",
-        percentage
-      );
+      const message =
+        xhr.responseJSON?.message ||
+        "Analysis failed. Please try again.";
 
+      showError(message);
 
-      sessionStorage.setItem(
-        "foundSkills",
-        JSON.stringify(found)
-      );
+      if (xhr.status === 401) {
 
+        sessionStorage.removeItem("token");
 
-      sessionStorage.setItem(
-        "missingSkills",
-        JSON.stringify(missing)
-      );
+        sessionStorage.removeItem("user");
 
+        sessionStorage.setItem("afterLogin", "analyze.html");
 
+        window.location.href = "login.html";
 
-      // =================================================
-      // GO DIRECTLY TO PREVIEW
-      // =================================================
+      }
 
-      window.location.href =
-        "preview.html";
+    })
 
+    .always(function () {
 
-    }, 900);
+      $btn
+        .prop("disabled", false)
+        .html(originalButtonHTML);
+
+    });
 
   });
-
 
 
   // =====================================================
@@ -406,7 +317,6 @@ $(function () {
 
 
   function badges(list, cls) {
-
 
     if (!list.length) {
 
@@ -438,29 +348,23 @@ $(function () {
   }
 
 
-
   function render(pct, found, missing) {
-
 
     // Highlight matched skills
 
     $("[data-k]").each(function () {
-
 
       const skill =
         String(
           $(this).data("k")
         ).toLowerCase();
 
-
       $(this).toggleClass(
         "hit",
         found.includes(skill)
       );
 
-
     });
-
 
 
     // Percentage
@@ -470,31 +374,25 @@ $(function () {
     );
 
 
-
     // Progress bar
 
     $("#bar")
-
       .css(
         "width",
         pct + "%"
       )
-
       .toggleClass(
         "bg-success",
         pct >= 70
       )
-
       .toggleClass(
         "bg-warning",
         pct >= 40 && pct < 70
       )
-
       .toggleClass(
         "bg-danger",
         pct < 40
       );
-
 
 
     // Summary
@@ -512,7 +410,6 @@ $(function () {
     );
 
 
-
     // Found skills
 
     $("#ok").html(
@@ -525,7 +422,6 @@ $(function () {
     );
 
 
-
     // Missing skills
 
     $("#miss").html(
@@ -536,7 +432,6 @@ $(function () {
       )
 
     );
-
 
 
     // Tips
@@ -554,7 +449,6 @@ $(function () {
       });
 
 
-
     if (missing.length) {
 
       tips.push(
@@ -564,7 +458,6 @@ $(function () {
       );
 
     }
-
     else {
 
       tips.push(
@@ -576,16 +469,13 @@ $(function () {
     }
 
 
-
     $("#tips").html(
       tips.join("")
     );
 
 
-
     $("#results")
       .removeClass("d-none");
-
 
 
     if ($("#results").length) {
