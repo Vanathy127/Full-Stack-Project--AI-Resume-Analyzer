@@ -120,4 +120,6 @@ module.exports = async function analyze(resumeText, jdText) {
   }
 
   return keywordAnalysis(resumeText, jdText);
+
+  module.exports.SKILLS = SKILLS;
 };

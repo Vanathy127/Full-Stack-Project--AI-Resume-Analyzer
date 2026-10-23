@@ -1,9 +1,9 @@
-
 const express = require('express');
 const multer = require('multer');
 const auth = require('../middleware/auth');
 const extractText = require('../utils/extractText');
 const analyze = require('../utils/analyzer');
+const parseResume = require('../utils/parseResume');
 const Analysis = require('../models/Analysis');
 
 const router = express.Router();
@@ -18,15 +18,11 @@ router.post('/', auth, upload.single('resume'), async (req, res) => {
     const jd = (req.body.jd || '').trim();
 
     if (!req.file) {
-      return res.status(400).json({
-        message: 'Upload your resume first.'
-      });
+      return res.status(400).json({ message: 'Upload your resume first.' });
     }
 
     if (jd.length < 20) {
-      return res.status(400).json({
-        message: 'Paste the job description.'
-      });
+      return res.status(400).json({ message: 'Paste the job description.' });
     }
 
     const resumeText = await extractText(req.file);
@@ -38,6 +34,7 @@ router.post('/', auth, upload.single('resume'), async (req, res) => {
     }
 
     const result = await analyze(resumeText, jd);
+    const detected = parseResume(resumeText);
 
     await Analysis.create({
       user: req.userId,
@@ -45,7 +42,7 @@ router.post('/', auth, upload.single('resume'), async (req, res) => {
       ...result
     });
 
-    res.json(result);
+    res.json({ ...result, resumeText, detected });
 
   } catch (err) {
     console.error(err);
