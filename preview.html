@@ -433,6 +433,17 @@
         transition: none !important;
       }
     }
+        .resume-text {
+      white-space: pre-wrap;
+      font-size: .85rem;
+      line-height: 1.65;
+      color: #2c2e3d;
+    }
+
+    .detected-item .value {
+      white-space: pre-line;
+      word-break: break-word;
+    }
   </style>
 </head>
 
@@ -579,74 +590,7 @@
           <div class="resume-viewport">
 
             <div class="resume-doc" id="resumeDocument">
-
-              <h2>AARSHAT BHATTARAI</h2>
-
-              <div class="role">
-                Civil Engineering Student
-              </div>
-
-              <div class="contact-line">
-                <i class="bi bi-envelope"></i>
-                aarav@email.com
-
-                &nbsp;|&nbsp;
-
-                <i class="bi bi-telephone"></i>
-                +91 9876543210
-
-                &nbsp;|&nbsp;
-
-                <i class="bi bi-geo-alt"></i>
-                VIT Vellore
-              </div>
-
-
-              <div class="section-title">EDUCATION</div>
-
-              <div class="entry-title">VIT Vellore</div>
-
-              <div class="entry-sub">
-                B.Tech Civil Engineering
-              </div>
-
-              <div class="entry-sub">
-                2024 – 2028
-              </div>
-
-
-              <div class="section-title">SKILLS</div>
-
-              <div class="skill-line">
-                AutoCAD, Java, Python, HTML, CSS, SQL
-              </div>
-
-
-              <div class="section-title">PROJECTS</div>
-
-              <ol>
-
-                <li>
-                  <span class="entry-title">
-                    Campus Event Website
-                  </span>
-                  <br>
-                  <span class="proj-desc">
-                    Built a website using HTML, CSS and JavaScript.
-                  </span>
-                </li>
-
-                <li>
-                  <span class="entry-title">
-                    Structural Design Project
-                  </span>
-                  <br>
-                  <span class="proj-desc">
-                    Designed RCC beam using Design Plus.
-                  </span>
-                </li>
-
-              </ol>
+                              <div class="resume-text" id="resumeText"></div>
 
             </div>
 
@@ -656,90 +600,59 @@
 
       </div>
 
-
-      <!-- DETECTED INFORMATION -->
+            <!-- DETECTED INFORMATION -->
       <div class="col-lg-4">
 
         <div class="card-soft h-100 p-4 detected-card">
 
-          <h6 class="fw-bold mb-2">
-            Detected Information
-          </h6>
-
+          <h6 class="fw-bold mb-2">Detected Information</h6>
 
           <div class="detected-item">
-
-            <div class="detected-icon">
-              <i class="bi bi-person"></i>
-            </div>
-
+            <div class="detected-icon"><i class="bi bi-person"></i></div>
             <div>
               <div class="label">Name</div>
-              <div class="value">Aarshat Bhattarai</div>
+              <div class="value" id="dName"></div>
             </div>
-
           </div>
 
+          <div class="detected-item">
+            <div class="detected-icon"><i class="bi bi-envelope"></i></div>
+            <div>
+              <div class="label">Contact</div>
+              <div class="value" id="dContact"></div>
+            </div>
+          </div>
 
           <div class="detected-item">
-
-            <div class="detected-icon">
-              <i class="bi bi-mortarboard"></i>
-            </div>
-
+            <div class="detected-icon"><i class="bi bi-mortarboard"></i></div>
             <div>
               <div class="label">Education</div>
-              <div class="value">
-                B.Tech Civil Engineering
-                <br>
-                VIT Vellore
-              </div>
+              <div class="value" id="dEducation"></div>
             </div>
-
           </div>
 
-
           <div class="detected-item">
-
-            <div class="detected-icon">
-              <i class="bi bi-stars"></i>
-            </div>
-
+            <div class="detected-icon"><i class="bi bi-stars"></i></div>
             <div>
               <div class="label">Skills</div>
-              <div class="value">
-                AutoCAD, Java, Python, HTML, CSS, SQL
-              </div>
+              <div class="value" id="dSkills"></div>
             </div>
-
           </div>
 
-
           <div class="detected-item">
-
-            <div class="detected-icon">
-              <i class="bi bi-kanban"></i>
-            </div>
-
+            <div class="detected-icon"><i class="bi bi-kanban"></i></div>
             <div>
               <div class="label">Projects</div>
-              <div class="value">2 projects found</div>
+              <div class="value" id="dProjects"></div>
             </div>
-
           </div>
 
-
           <div class="detected-item">
-
-            <div class="detected-icon">
-              <i class="bi bi-briefcase"></i>
-            </div>
-
+            <div class="detected-icon"><i class="bi bi-briefcase"></i></div>
             <div>
               <div class="label">Experience</div>
-              <div class="value muted">Not found</div>
+              <div class="value" id="dExperience"></div>
             </div>
-
           </div>
 
         </div>
@@ -747,7 +660,8 @@
       </div>
 
     </div>
-
+      
+      
 
     <!-- ACTIONS -->
     <div class="d-flex justify-content-between mt-4 preview-actions">
@@ -804,6 +718,50 @@
       } else {
         $("#uploadedFileName").text("Uploaded resume");
       }
+
+            // ---------------------------------------------
+      // REAL RESULT FROM BACKEND
+      // ---------------------------------------------
+
+      const result = JSON.parse(sessionStorage.getItem("result") || "null");
+
+      if (!result) {
+        window.location.href = "analyze.html";
+        return;
+      }
+
+      const d = result.detected || {};
+
+      const PRETTY = {
+        "sql": "SQL", "mysql": "MySQL", "postgresql": "PostgreSQL", "mongodb": "MongoDB",
+        "aws": "AWS", "css": "CSS", "html": "HTML", "rest api": "REST API",
+        "node.js": "Node.js", "javascript": "JavaScript", "typescript": "TypeScript",
+        "jquery": "jQuery", "github": "GitHub", "graphql": "GraphQL", "power bi": "Power BI"
+      };
+
+      function pretty(skill) {
+        return PRETTY[skill] || skill.replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+      }
+
+      function fill(selector, value) {
+        const $el = $(selector);
+        if (value && String(value).trim()) {
+          $el.text(value).removeClass("muted");
+        } else {
+          $el.text("Not found").addClass("muted");
+        }
+      }
+
+      $("#resumeText").text(result.resumeText || "");
+
+      fill("#dName", d.name);
+      fill("#dContact", [d.email, d.phone].filter(Boolean).join("\n"));
+      fill("#dEducation", (d.education || []).join("\n"));
+      fill("#dSkills", (d.skills || []).map(pretty).join(", "));
+      fill("#dProjects", (d.projects || []).length
+        ? d.projects.length + " found\n" + d.projects.join("\n")
+        : "");
+      fill("#dExperience", (d.experience || []).join("\n"));
 
 
       // ---------------------------------------------

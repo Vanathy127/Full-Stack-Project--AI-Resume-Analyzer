@@ -264,11 +264,13 @@ $(function () {
 
     .done(function (data) {
 
-      sessionStorage.setItem(
+            sessionStorage.setItem(
         "result",
         JSON.stringify(data)
       );
 
+      sessionStorage.setItem("resumeFile", file.name);
+      
       window.location.href = "preview.html";
 
     })

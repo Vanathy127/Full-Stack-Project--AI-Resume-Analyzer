@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign up · ResumeScan AI</title>
+<title>ResumeAI | Sign Up</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -19,7 +19,7 @@
         </div>
         <div class="mb-3">
           <label for="email" class="form-label small text-secondary">Email</label>
-          <input type="email" class="form-control" id="email" placeholder="you@company.com">
+          <input type="email" class="form-control" id="email" placeholder="you@example.com">
         </div>
         <div class="mb-3">
           <label for="password" class="form-label small text-secondary">Password</label>
@@ -35,18 +35,32 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
 $(function () {
+
   function show(msg, type) {
-    $('#statusBox').removeClass('d-none alert-success alert-danger').addClass('alert-' + type).text(msg);
+    $('#statusBox')
+      .removeClass('d-none alert-success alert-danger')
+      .addClass('alert-' + type)
+      .text(msg);
   }
+
   $('#signupForm').on('submit', function (e) {
     e.preventDefault();
+
     var name = $.trim($('#name').val());
     var email = $.trim($('#email').val());
     var password = $('#password').val();
-    if (!email || password.length < 6) {
-      return show('Enter an email and a password of at least 6 characters.', 'danger');
+
+    $('#statusBox').addClass('d-none');
+
+    if (!email || email.indexOf('@') === -1) {
+      return show('Enter a valid email address.', 'danger');
     }
-    var $btn = $('#submitBtn').prop('disabled', true).text('Creating…');
+    if (password.length < 6) {
+      return show('Password must be at least 6 characters.', 'danger');
+    }
+
+    var $btn = $('#submitBtn').prop('disabled', true).text('Creating...');
+
     $.ajax({
       url: '/api/auth/signup',
       method: 'POST',
@@ -54,18 +68,29 @@ $(function () {
       data: JSON.stringify({ name: name, email: email, password: password })
     })
     .done(function (data) {
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('name', data.name || '');
-      show('Account created. Redirecting…', 'success');
-      setTimeout(function () { window.location.href = 'analyze.html'; }, 800);
+      if (!data.token) {
+        return show('Signup response did not include a token.', 'danger');
+      }
+
+      sessionStorage.setItem('token', data.token);
+      sessionStorage.setItem('user', email);
+
+      show('Account created. Redirecting...', 'success');
+
+      var next = sessionStorage.getItem('afterLogin') || 'index.html';
+      sessionStorage.removeItem('afterLogin');
+      setTimeout(function () { window.location.href = next; }, 800);
     })
     .fail(function (xhr) {
-      var msg = 'Could not sign up. Try again.';
+      var msg = 'Could not sign up. Is the server running on localhost:5000?';
       try { msg = JSON.parse(xhr.responseText).message || msg; } catch (err) {}
       show(msg, 'danger');
     })
-    .always(function () { $btn.prop('disabled', false).text('Sign up'); });
+    .always(function () {
+      $btn.prop('disabled', false).text('Sign up');
+    });
   });
+
 });
 </script>
 </body>
